@@ -90,8 +90,8 @@ function IconGen:getIcon(name, size, style, force, border, color, border2)
                 fontSize = size - 2
             end
 
-            if not isElement(faFonts[style .. fontSize]) then
-                self.fonts[style .. fontSize] = DxFont('fa/' .. style .. '.otf', 0.4375 * fontSize, false, 'antialiased')
+            if not isElement(self.fonts[style .. fontSize]) then
+                self.fonts[style .. fontSize] = DxFont('public/fonts/fa/' .. style .. '.otf', 0.4375 * fontSize, false, 'antialiased')
             end
 
             local font = self.fonts[style .. fontSize]
@@ -111,16 +111,16 @@ function IconGen:getIcon(name, size, style, force, border, color, border2)
             dxSetRenderTarget(rt, true)
             dxSetBlendMode('modulate_add')
             if border then
-                dxDrawText(utf8.char(tonumber("0x" .. faUnicodes[name])), 1, 1, size + 1, size + 1, border, 1, font, 'center', 'center')
+                dxDrawText(utf8.char(tonumber("0x" .. self.unicodes[name])), 1, 1, size + 1, size + 1, border, 1, font, 'center', 'center')
             end
             if border2 then
                 for bx = -1, 1, 2 do
                     for by = -1, 1, 2 do
-                        dxDrawText(utf8.char(tonumber("0x" .. faUnicodes[name])), 0 + bx, 0 + by, size + bx, size + by, border2, 1, font, 'center', 'center')
+                        dxDrawText(utf8.char(tonumber("0x" .. self.unicodes[name])), 0 + bx, 0 + by, size + bx, size + by, border2, 1, font, 'center', 'center')
                     end
                 end
             end
-            dxDrawText(utf8.char(tonumber("0x" .. faUnicodes[name])), 0, 0, size, size, color or tocolor(255, 255, 255), 1, font, 'center', 'center')
+            dxDrawText(utf8.char(tonumber("0x" .. self.unicodes[name])), 0, 0, size, size, color or tocolor(255, 255, 255), 1, font, 'center', 'center')
             dxSetBlendMode("blend")
             dxSetRenderTarget()
 
@@ -163,7 +163,7 @@ function IconGen:getIcon(name, size, style, force, border, color, border2)
             end
 
             pixels = dxConvertPixels(pixels, 'png')
-            local file = File.create(fileName .. self.ticks[fileName])
+            local file = File.new(fileName .. self.ticks[fileName])
             file:write(pixels)
             file:close()
             if pixelCount > 0 then
@@ -171,10 +171,9 @@ function IconGen:getIcon(name, size, style, force, border, color, border2)
             end
 
             return fileName
+        else
+            return fileName
         end
-    else
-        error('Invalid icon style: ' .. style)
-        return
     end
 end
 

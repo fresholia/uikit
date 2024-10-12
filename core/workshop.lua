@@ -9,9 +9,15 @@ function Workshop:constructor()
 end
 
 function Workshop:show()
+    if self.window then
+        self.window:destroy()
+    end
+
     local window = Window:new(Vector2(0, 0), Vector2(1400, 900), 'UIKit - Workshop (' .. Core.version .. ')')
     window:toCenter()
     window:setTitlebarVisible(true)
+
+    self.window = window
 
     local tabs = Tabs:new(window.content.position, window.content.size, Tabs.placement.Start, Tabs.variants.Solid, Element.color.Dark, Element.size.Medium)
     tabs:setParent(window)

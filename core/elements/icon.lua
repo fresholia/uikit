@@ -11,7 +11,6 @@ function Icon:constructor(_, size, name, style, force, borderColor, color)
     self.color = color or tocolor(255, 255, 255, 255)
 
     self.texture = Core.iconGen:getIcon(name, size.x, style, force, borderColor, color)
-
     self.isRotating = false
 end
 

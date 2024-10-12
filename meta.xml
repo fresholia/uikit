@@ -11,50 +11,51 @@
     <file src="public/**/**/*.otf"/>
     <file src="public/**/**/*.json"/>
 
-    <script type="shared" src="vendor/adapter.lua"/>
-    <script type="shared" src="vendor/classlib.lua"/>
+    <script type="shared" skip="true" src="vendor/adapter.lua"/>
+    <script type="shared" skip="true" src="vendor/classlib.lua"/>
 
     <script type="server" src="server/updater.lua"/>
 
-    <script type="client" src="core/enums/element-enums.lua"/>
-    <script type="client" src="core/theme/palette.lua"/>
-    <script type="client" src="core/utils/utils.lua"/>
-    <script type="client" src="core/animate.lua"/>
-    <script type="client" src="core/core.lua"/>
-    <script type="client" src="core/theme.lua"/>
-    <script type="client" src="core/font.lua"/>
-    <script type="client" src="core/element.lua"/>
-    <script type="client" src="core/workshop.lua"/>
-    <script type="client" src="core/elements/rectangle.lua"/>
-    <script type="client" src="core/elements/text.lua"/>
-    <script type="client" src="core/elements/icon.lua"/>
-    <script type="client" src="core/elements/window.theme.lua"/>
-    <script type="client" src="core/elements/window.lua"/>
-    <script type="client" src="core/elements/button.theme.lua"/>
-    <script type="client" src="core/elements/button.lua"/>
-    <script type="client" src="core/elements/checkbox.theme.lua"/>
-    <script type="client" src="core/elements/checkbox.lua"/>
-    <script type="client" src="core/elements/tooltip.theme.lua"/>
-    <script type="client" src="core/elements/tooltip.lua"/>
-    <script type="client" src="core/elements/tab.lua"/>
-    <script type="client" src="core/elements/tabs.theme.lua"/>
-    <script type="client" src="core/elements/tabs.lua"/>
-    <script type="client" src="core/elements/modal.theme.lua"/>
-    <script type="client" src="core/elements/modal.lua"/>
-    <script type="client" src="core/elements/switch.theme.lua"/>
-    <script type="client" src="core/elements/switch.lua"/>
-    <script type="client" src="core/elements/line.lua"/>
-    <script type="client" src="core/elements/render-texture.lua"/>
-    <script type="client" src="core/elements/gradient-fill.lua"/>
-    <script type="client" src="core/elements/chart.theme.lua"/>
-    <script type="client" src="core/elements/chart.lua"/>
-    <script type="client" src="core/elements/blur.lua"/>
-    <script type="client" src="core/elements/icon-button.theme.lua"/>
-    <script type="client" src="core/elements/icon-button.lua"/>
+    <script type="client" skip="true" src="core/enums/element-enums.lua"/>
+    <script type="client" skip="true" src="core/theme/palette.lua"/>
+    <script type="client" skip="true" src="core/utils/utils.lua"/>
+    <script type="client" skip="true" src="core/animate.lua"/>
+    <script type="client" skip="true" src="core/core.lua"/>
+    <script type="client" skip="true" src="core/theme.lua"/>
+    <script type="client" skip="true" src="core/icon-gen.lua"/>
+    <script type="client" skip="true" src="core/font.lua"/>
+    <script type="client" skip="true" src="core/element.lua"/>
+    <script type="client" skip="true" src="core/workshop.lua"/>
+    <script type="client" skip="true" src="core/elements/rectangle.lua"/>
+    <script type="client" skip="true" src="core/elements/text.lua"/>
+    <script type="client" skip="true" src="core/elements/icon.lua"/>
+    <script type="client" skip="true" src="core/elements/window.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/window.lua"/>
+    <script type="client" skip="true" src="core/elements/button.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/button.lua"/>
+    <script type="client" skip="true" src="core/elements/checkbox.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/checkbox.lua"/>
+    <script type="client" skip="true" src="core/elements/tooltip.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/tooltip.lua"/>
+    <script type="client" skip="true" src="core/elements/tab.lua"/>
+    <script type="client" skip="true" src="core/elements/tabs.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/tabs.lua"/>
+    <script type="client" skip="true" src="core/elements/modal.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/modal.lua"/>
+    <script type="client" skip="true" src="core/elements/switch.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/switch.lua"/>
+    <script type="client" skip="true" src="core/elements/line.lua"/>
+    <script type="client" skip="true" src="core/elements/render-texture.lua"/>
+    <script type="client" skip="true" src="core/elements/gradient-fill.lua"/>
+    <script type="client" skip="true" src="core/elements/chart.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/chart.lua"/>
+    <script type="client" skip="true" src="core/elements/blur.lua"/>
+    <script type="client" skip="true" src="core/elements/icon-button.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/icon-button.lua"/>
 
-    <script type="client" src="core/elements/base-input.theme.lua"/>
-    <script type="client" src="core/elements/base-input.lua"/>
-    <script type="client" src="core/elements/input.lua"/>
-    <script type="client" src="core/renderer.lua"/>
-    <script type="client" src="main.lua"/>
+    <script type="client" skip="true" src="core/elements/base-input.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/base-input.lua"/>
+    <script type="client" skip="true" src="core/elements/input.lua"/>
+    <script type="client" skip="true" src="core/renderer.lua"/>
+    <script type="client" skip="true" src="main.lua"/>
 </meta>
