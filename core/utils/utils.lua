@@ -43,3 +43,16 @@ end
 function rgb2hex(r, g, b)
     return string.format("#%02X%02X%02X", r, g, b)
 end
+
+function convertSizeToP2(size)
+    if 256 <= size then
+        return math.ceil(size)
+    else
+        for i = 0, 8 do
+            local p2 = math.pow(2, i)
+            if size <= p2 then
+                return p2
+            end
+        end
+    end
+end

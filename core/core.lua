@@ -11,6 +11,7 @@ function Core:constructor()
     self.version = '1.0.0-alpha'
 
     self.animate = Animate:new()
+    self.iconGen = IconGen:new()
 
     self.globalPadding = {
         [Element.size.Small] = {
@@ -40,14 +41,6 @@ function Core:constructor()
     createNativeEvent(ClientEventNames.onClientCursorMove, root, bind(self.onCursorMove, self))
     createNativeEvent(ClientEventNames.onClientCharacter, root, bind(self.onCharacter, self))
     createNativeEvent(ClientEventNames.onClientKey, root, bind(self.onKey, self))
-
-    createEvent('icons.onRefresh', bind(self.updateFaTicks, self), localPlayer)
-
-    self.faTicks = exports.in_icons:getFaTicks()
-end
-
-function Core:updateFaTicks()
-    self.faTicks = exports.in_icons:getFaTicks()
 end
 
 function Core:inArea(position, size)

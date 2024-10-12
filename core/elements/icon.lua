@@ -10,7 +10,7 @@ function Icon:constructor(_, size, name, style, force, borderColor, color)
     self.type = ElementType.Icon
     self.color = color or tocolor(255, 255, 255, 255)
 
-    self.texture = exports.in_icons:getFaIconFilename(name, size.x, style, force, borderColor, color)
+    self.texture = Core.iconGen:getIcon(name, size.x, style, force, borderColor, color)
 
     self.isRotating = false
 end
@@ -24,7 +24,7 @@ function Icon:rotate(state)
 end
 
 function Icon:render()
-    if not Core.faTicks[self.texture] then
+    if not Core.iconGen.ticks[self.texture] then
         dxDrawRectangle(self.position.x, self.position.y, self.size.x, self.size.y, tocolor(0, 0, 0, 255), self.postGUI)
         return
     end
@@ -32,7 +32,7 @@ function Icon:render()
     local rotation = self.isRotating and getTickCount() % 360 or 0
 
     dxDrawImage(self.position.x, self.position.y, self.size.x, self.size.y,
-            ':in_icons/' .. self.texture .. Core.faTicks[self.texture],
+            self.texture .. Core.iconGen.ticks[self.texture],
             rotation, 0, 0, self.color, self.postGUI)
 end
 

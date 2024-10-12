@@ -8,8 +8,14 @@
     <file src="public/**/*.png"/>
     <file src="public/**/*.svg"/>
 
-    <script type="client" src="vendor/adapter.lua"/>
-    <script type="client" src="vendor/classlib.lua"/>
+    <file src="public/**/**/*.otf"/>
+    <file src="public/**/**/*.json"/>
+
+    <script type="shared" src="vendor/adapter.lua"/>
+    <script type="shared" src="vendor/classlib.lua"/>
+
+    <script type="server" src="server/updater.lua"/>
+
     <script type="client" src="core/enums/element-enums.lua"/>
     <script type="client" src="core/theme/palette.lua"/>
     <script type="client" src="core/utils/utils.lua"/>
