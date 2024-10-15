@@ -24,7 +24,7 @@ for working with UI elements, such as layout management, event handling, and ani
 * **Styling**: UIKit includes a system for styling UI elements, allowing you to customize the appearance of your UI
   elements.
 
-## 3. Links ##
+## 3. Links ## 
 
 * [Wiki](https://docs-uikit.gitbook.io/ui-kit)
 * [GitHub](https://github.com/fresholia/uikit)
