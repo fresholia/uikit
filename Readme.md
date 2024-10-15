@@ -1,4 +1,4 @@
-# UIKit
+# UIKit for MTA:SA
 
 ## 1. Introduction ##
 
@@ -24,7 +24,13 @@ for working with UI elements, such as layout management, event handling, and ani
 * **Styling**: UIKit includes a system for styling UI elements, allowing you to customize the appearance of your UI
   elements.
 
-## 3. License ##
+## 3. Links ##
+
+* [Wiki](https://docs-uikit.gitbook.io/ui-kit)
+* [GitHub](https://github.com/fresholia/uikit)
+* [Discord](https://discord.gg/Psu56spwTs)
+
+## 4. License ##
 
 UIKit is released under the MIT License.
 All source code is available on [GitHub](https://github.com/fresholia/uikit).
