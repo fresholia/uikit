@@ -3,12 +3,13 @@
     <min_mta_version client="1.5.9-9.21643" server="1.6.0-9.22459"/>
     <download_priority_group>95</download_priority_group>
 
+    <file src="meta.xml"/>
+    <file src="Readme.md"/>
     <file src="public/**/*.otf"/>
     <file src="public/**/*.ttf"/>
     <file src="public/**/*.png"/>
     <file src="public/**/*.svg"/>
 
-    <file src="public/**/**/*.otf"/>
     <file src="public/**/**/*.json"/>
 
     <script type="shared" skip="true" src="vendor/adapter.lua"/>
@@ -58,4 +59,8 @@
     <script type="client" skip="true" src="core/elements/input.lua"/>
     <script type="client" skip="true" src="core/renderer.lua"/>
     <script type="client" skip="true" src="main.lua"/>
+
+    <script type="client" src="_exporter.lua"/>
+
+    <export function="getModule" type="client"/>
 </meta>
