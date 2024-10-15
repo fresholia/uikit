@@ -56,3 +56,8 @@ function convertSizeToP2(size)
         end
     end
 end
+
+function getOriginalPath(path)
+    return ':' .. RESOURCE_NAME .. '/' .. path
+end
+

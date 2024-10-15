@@ -1,5 +1,9 @@
 local Exporter = {}
-Exporter.injection = {}
+Exporter.resourceName = getResourceName(getThisResource())
+Exporter.injection = {
+    'RESOURCE_NAME = "' .. Exporter.resourceName .. '"',
+    'IS_EXTERNAL = true'
+}
 
 createNativeEvent(ClientEventNames.onClientResourceStart, resourceRoot, function()
     local xml = XML.load('meta.xml')
@@ -9,7 +13,8 @@ createNativeEvent(ClientEventNames.onClientResourceStart, resourceRoot, function
         if node:getName() == 'script' then
             local src = node:getAttribute('src')
             local isSkip = node:getAttribute('skip')
-            if isSkip then
+            local isIgnore = node:getAttribute('ignore')
+            if isSkip and not isIgnore then
                 if not File.exists(src) then
                     outputConsole('[UIKit] Failed to load module, file not found: ' .. src)
                     break
@@ -24,6 +29,8 @@ createNativeEvent(ClientEventNames.onClientResourceStart, resourceRoot, function
         end
     end
 
+    table.insert(Exporter.injection, 'screenSize = Vector2(guiGetScreenSize())')
+    table.insert(Exporter.injection, 'Core = Core:new()')
     table.insert(Exporter.injection, 'outputConsole("[UIKit] Exported modules loaded.")')
 end)
 

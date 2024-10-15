@@ -2,7 +2,9 @@ local Renderer = {}
 Renderer.debugEnabled = false
 
 function Renderer.render()
-    Core.animate:updateFrame()
+    if Core.animate then
+        Core.animate:updateFrame()
+    end
 
     for i = 1, #Core.elementsArray do
         local element = Core:hasElement(Core.elementsArray[i])

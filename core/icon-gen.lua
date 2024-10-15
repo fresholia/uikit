@@ -5,7 +5,7 @@ function IconGen:new(...)
 end
 
 function IconGen:constructor()
-    self.iconsPath = 'public/fonts/fa/icons.json'
+    self.iconsPath = getOriginalPath('/public/fonts/fa/icons.json')
     self.unicodes = {}
     self.ticks = {}
 
@@ -91,7 +91,7 @@ function IconGen:getIcon(name, size, style, force, border, color, border2)
             end
 
             if not isElement(self.fonts[style .. fontSize]) then
-                self.fonts[style .. fontSize] = DxFont('public/fonts/fa/' .. style .. '.otf', 0.4375 * fontSize, false, 'antialiased')
+                self.fonts[style .. fontSize] = DxFont(getOriginalPath('public/fonts/fa/' .. style .. '.otf'), 0.4375 * fontSize, false, 'antialiased')
             end
 
             local font = self.fonts[style .. fontSize]

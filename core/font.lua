@@ -9,7 +9,7 @@ function Font:constructor(name, format, size, isBold)
     self.size = size
     self.isBold = isBold
 
-    self.element = DxFont('public/fonts/' .. name .. '.' .. format, size, isBold)
+    self.element = DxFont(getOriginalPath('/public/fonts/' .. name .. '.' .. format), size, isBold)
 
     if not self.element then
         error('Failed to create font: ' .. name)

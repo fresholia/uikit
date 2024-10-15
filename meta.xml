@@ -58,9 +58,9 @@
     <script type="client" skip="true" src="core/elements/base-input.lua"/>
     <script type="client" skip="true" src="core/elements/input.lua"/>
     <script type="client" skip="true" src="core/renderer.lua"/>
-    <script type="client" skip="true" src="main.lua"/>
+    <script type="client" skip="true" ignore="true" src="main.lua"/>
 
-    <script type="client" src="_exporter.lua"/>
+    <script type="client" skip="true" ignore="true" src="_exporter.lua"/>
 
     <export function="getModule" type="client"/>
 </meta>

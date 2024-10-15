@@ -1,4 +1,5 @@
 screenSize = Vector2(guiGetScreenSize())
+RESOURCE_NAME = getResourceName(getThisResource())
 
 local function bootstrap()
     -- # Create a new core instance
