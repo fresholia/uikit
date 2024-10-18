@@ -3,11 +3,11 @@ TabsTheme = inherit(Theme)
 function TabsTheme:constructor()
     self:setProperty('padding', Core.globalPadding)
     self:setProperty('gap', {
-        [Element.size.Small] = 4,
-        [Element.size.Medium] = 8,
-        [Element.size.Large] = 12
+        [Element.size.Small] = 2,
+        [Element.size.Medium] = 4,
+        [Element.size.Large] = 8
     })
-    self:setProperty('innerPadding', { x = 6, y = 6 })
+    self:setProperty('innerPadding', { x = 16, y = 12 })
     self:setProperty('borderRadius', 8)
     self:setProperty('font', Core.fonts.Regular.element)
 
@@ -20,11 +20,10 @@ function TabsTheme:constructor()
     })
 
     self:setColor(Element.color.Dark, {
-        Background = self:combine('DARK', 900, 0.7),
-        BackgroundHover = self:combine('DARK', 700, 1),
-        BackgroundActive = self:combine('DARK', 800, 1),
-        BackgroundDisabled = self:combine('DARK', 200, 1),
-        Foreground = self:combine('DARK', 50, 1),
+        Background = self:combine('GRAY', 100, 0.7),
+        BackgroundHover = self:combine('GRAY', 200, 1),
+        BackgroundActive = self:combine('GRAY', 300, 1),
+        BackgroundDisabled = self:combine('GRAY', 200, 1),
+        Foreground = self:combine('GRAY', 900, 1),
     })
-
 end

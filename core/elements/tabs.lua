@@ -87,12 +87,18 @@ function Tabs:getTabHeight()
     return dxGetFontHeight(padding.fontSize, self.theme:getProperty('font')) + padding.y * 2
 end
 
+function Tabs:setFitTabs(fitTabs)
+    self.fitTabs = fitTabs
+    self:doPulse()
+end
+
 function Tabs:getLayout()
     local layout = {}
 
     local gap = self.theme:getProperty('gap')[self.tabsSize]
     local innerPadding = self.theme:getProperty('innerPadding')
     local tabHeight = self:getTabHeight()
+    local padding = self.theme:getProperty('padding')[self.tabsSize]
 
     if self.placement == Tabs.placement.Top then
         local tabsListSize = {
@@ -146,10 +152,30 @@ function Tabs:getLayout()
         layout.tabsListPosition = tabsListPosition
 
     elseif self.placement == Tabs.placement.Start then
+        local tabsListWidth = 0
+
+        for i = 1, #self.tabs do
+            local tab = self.tabs[i]
+            if tab then
+                local textWidth = dxGetTextWidth(tab.label, padding.fontSize, self.theme:getProperty('font')) + innerPadding.x * 4
+                if textWidth > tabsListWidth then
+                    tabsListWidth = textWidth
+
+                    if tab.icon then
+                        tabsListWidth = tabsListWidth + 30 + innerPadding.x
+                    end
+                end
+            end
+        end
+
         local tabsListSize = {
             x = self.size.x * 0.3,
             y = self.size.y
         }
+
+        if self.fitTabs and tabsListWidth ~= 0 then
+            tabsListSize.x = tabsListWidth
+        end
 
         layout.tabsListSize = tabsListSize
 
@@ -240,6 +266,9 @@ end
 
 function Tabs:doPulse()
     self:removeChildrenExcept(ElementType.Tab)
+    if self.activeTabRect then
+        self.activeTabRect:destroy()
+    end
 
     local layout = self:getLayout()
 
@@ -258,8 +287,9 @@ function Tabs:doPulse()
     contentRect:setColor(color.Background.element)
 
     local bgRect = Rectangle:new(
-            Vector2(0, 0), Vector2(300, 20), 1)
+            Vector2(0, 0), Vector2(300, 20), 4)
     bgRect:setParent(contentRect)
+    bgRect:setRenderMode(Element.renderMode.Hidden)
     bgRect:setColor(color.BackgroundHover.element)
 
     self.activeTabRect = bgRect
@@ -279,7 +309,8 @@ function Tabs:doPulse()
                     self.color,
                     self.tabsSize
             )
-            tabButton:setParent(self)
+            tabButton:setParent(contentRect)
+            tabButton:setRenderIndex(10)
 
             if tab.icon then
                 tabButton:setStartContent(tab.icon)
@@ -297,6 +328,7 @@ function Tabs:doPulse()
             if isActive then
                 bgRect:setSize(tabButton.size, false)
                 bgRect:setPosition(tabButton.position)
+                bgRect:setRenderMode(Element.renderMode.Normal)
             end
 
             self.tabActivePositionMap[tab.id] = {

@@ -255,13 +255,13 @@ function Element:virtual_render(children)
         return
     end
 
-    if self.render then
+    if self.render and self.renderMode == Element.renderMode.Normal then
         self:render()
     end
 
     for _, child in ipairs(children) do
         local childElement = Core:hasElement(child.element)
-        if childElement and childElement.renderMode == Element.renderMode.Normal then
+        if childElement then
             childElement:virtual_render(child.children)
         end
     end

@@ -39,7 +39,7 @@ function Button:setEndContent(content)
 end
 
 function Button:doPulse()
-    self:removeChildren()
+    self:removeChildrenExcept(ElementType.Icon)
 
     local padding = self.theme:getProperty('padding')[self.buttonSize or Element.size.Medium]
 
