@@ -49,8 +49,8 @@ end
 function RenderTexture:renderChildren()
     for _, childId in pairs(self.children) do
         local child = Core:hasElement(childId)
-        if child then
-            child:virtual_render(child.children)
+        if child and child.render then
+            child:render(child.children)
         end
     end
 end

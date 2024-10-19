@@ -53,6 +53,7 @@
     <script type="client" skip="true" src="core/elements/blur.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.theme.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.lua"/>
+    <script type="client" skip="true" src="core/elements/button-group.lua"/>
 
     <script type="client" skip="true" src="core/elements/base-input.theme.lua"/>
     <script type="client" skip="true" src="core/elements/base-input.lua"/>

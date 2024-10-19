@@ -10,13 +10,13 @@ function ChartTheme:constructor()
 
     self:setColor(Element.color.Primary, {
         Background = self:combine('DARK', 900, 1),
-        Foreground = self:combine('PRIMARY', 900, 1),
+        Foreground = self:combine('PRIMARY', 200, 1),
 
         Line = self:combine('DARK', 800, 0.3),
         LineText = self:combine('DARK', 600, 1),
 
-        GradientStart = self:combine('PRIMARY', 900, 1),
-        GradientEnd = self:combine('PRIMARY', 400, 1),
+        GradientStart = self:combine('PRIMARY', 300, 1),
+        GradientEnd = self:combine('PRIMARY', 600, 1),
     })
 
     self:setColor(Element.color.Secondary, {

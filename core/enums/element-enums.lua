@@ -18,4 +18,5 @@ ElementType = {
     RenderTexture = 'RenderTexture',
     Input = 'Input',
     BaseInput = 'BaseInput',
+    ButtonGroup = 'ButtonGroup',
 }

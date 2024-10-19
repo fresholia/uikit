@@ -38,6 +38,11 @@ function Button:setEndContent(content)
     self:doPulse()
 end
 
+function Button:setColor(color)
+    self.color = color
+    self:doPulse()
+end
+
 function Button:doPulse()
     self:removeChildrenExcept(ElementType.Icon)
 
@@ -87,7 +92,7 @@ function Button:doPulse()
 
     self.size = size
 
-    local borderRadius = self.size.y * 0.2
+    local borderRadius = self.theme:getProperty('borderRadius') or self.size.y * 0.2
 
     local bg = Rectangle:new(self.position, self.size, borderRadius)
     bg:setColor(self.disabled and colorPalette.BackgroundDisabled.element or colorPalette.Background.element)

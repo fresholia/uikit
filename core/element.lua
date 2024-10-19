@@ -12,6 +12,7 @@ Element.events = {
     OnVisibleChange = 'OnVisibleChange',
     OnCharacter = 'OnCharacter',
     OnKey = 'OnKey',
+    OnChange = 'OnChange',
 }
 Element.color = {
     Primary = 'primary',

@@ -36,7 +36,7 @@ end
 
 function Chart:setSeries(series)
     self.series = series
-    self:createChartTexture()
+    self:doPulse()
 end
 
 function Chart:getSeries()
