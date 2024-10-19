@@ -286,6 +286,7 @@ function Tabs:doPulse()
     contentRect:setParent(self)
     contentRect:setRenderIndex(-1)
     contentRect:setColor(color.Background.element)
+    contentRect:setRenderMode(self.variant == Tabs.variants.Light and Element.renderMode.Hidden or Element.renderMode.Normal)
 
     local bgRect = Rectangle:new(
             Vector2(0, 0), Vector2(300, 20), 4)
