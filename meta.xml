@@ -20,6 +20,7 @@
     <script type="client" skip="true" src="core/enums/element-enums.lua"/>
     <script type="client" skip="true" src="core/theme/palette.lua"/>
     <script type="client" skip="true" src="core/utils/utils.lua"/>
+    <script type="client" skip="true" src="core/utils/layout.lua"/>
     <script type="client" skip="true" src="core/animate.lua"/>
     <script type="client" skip="true" src="core/core.lua"/>
     <script type="client" skip="true" src="core/theme.lua"/>

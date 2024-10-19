@@ -12,6 +12,7 @@ function Core:constructor()
 
     self.animate = Animate:new()
     self.iconGen = IconGen:new()
+    self.layout = Layout:new()
 
     self.globalPadding = {
         [Element.size.Small] = {
