@@ -51,6 +51,8 @@
     <script type="client" skip="true" src="core/elements/gradient-fill.lua"/>
     <script type="client" skip="true" src="core/elements/chart.theme.lua"/>
     <script type="client" skip="true" src="core/elements/chart.lua"/>
+    <script type="client" skip="true" src="core/elements/date-picker.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/date-picker.lua"/>
     <script type="client" skip="true" src="core/elements/blur.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.theme.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.lua"/>

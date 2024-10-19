@@ -19,4 +19,5 @@ ElementType = {
     Input = 'Input',
     BaseInput = 'BaseInput',
     ButtonGroup = 'ButtonGroup',
+    DatePicker = 'DatePicker',
 }

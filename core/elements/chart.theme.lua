@@ -21,24 +21,24 @@ function ChartTheme:constructor()
 
     self:setColor(Element.color.Secondary, {
         Background = self:combine('DARK', 900, 1),
-        Foreground = self:combine('SECONDARY', 900, 1),
+        Foreground = self:combine('SECONDARY', 200, 1),
 
         Line = self:combine('DARK', 800, 0.3),
         LineText = self:combine('DARK', 600, 1),
 
-        GradientStart = self:combine('SECONDARY', 900, 1),
-        GradientEnd = self:combine('SECONDARY', 400, 1),
+        GradientStart = self:combine('SECONDARY', 300, 1),
+        GradientEnd = self:combine('SECONDARY', 600, 1),
     })
 
     self:setColor(Element.color.Success, {
         Background = self:combine('DARK', 900, 1),
-        Foreground = self:combine('GREEN', 900, 1),
+        Foreground = self:combine('GREEN', 200, 1),
 
         Line = self:combine('DARK', 800, 0.3),
         LineText = self:combine('DARK', 600, 1),
 
-        GradientStart = self:combine('GREEN', 900, 1),
-        GradientEnd = self:combine('GREEN', 400, 1),
+        GradientStart = self:combine('GREEN', 300, 1),
+        GradientEnd = self:combine('GREEN', 600, 1),
     })
 
     self:setColor(Element.color.Danger, {

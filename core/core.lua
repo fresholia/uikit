@@ -67,6 +67,10 @@ function Core:onClickElement(button, state, absX, absY)
         return
     end
 
+    if not self.elements then
+        return
+    end
+
     for _, element in pairs(self.elements) do
         if element and element:isVisible() then
             if self:inArea(element.position, element.size) and not element:isDisabled() then
