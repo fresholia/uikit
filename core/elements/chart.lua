@@ -117,6 +117,7 @@ function Chart:createChartTexture()
             )
     )
     rt:setUID(self.type .. md5(toJSON(self.series) .. self.variant .. self.color))
+
     rt:setAsTarget()
 
     if self.variant == Chart.variants.Transparent then
@@ -171,21 +172,23 @@ function Chart:createChartTexture()
                                 normalizedData[i + 1] or 0,
                                 normalizedData[i + 2] or 0), 0, rt.size.y)
 
-                        if nextX and nextY then
-                            local line = Line:new(Vector2(prevX, prevY),
-                                    Vector2(nextX, nextY), customPalette.Foreground.element, 2)
-                            line:setParent(rt)
-                        end
+                        if not rt.isExists then
+                            if nextX and nextY then
+                                local line = Line:new(Vector2(prevX, prevY),
+                                        Vector2(nextX, nextY), customPalette.Foreground.element, 2)
+                                line:setParent(rt)
+                            end
 
-                        if self.fill == Chart.fill.Gradient then
-                            local gradientFillRect = GradientFill:new(
-                                    Vector2(prevX, prevY),
-                                    Vector2(nextX, nextY),
-                                    self.position.y + rt.size.y,
-                                    customPalette.GradientStart.original,
-                                    customPalette.GradientEnd.original
-                            )
-                            gradientFillRect:setParent(rt)
+                            if self.fill == Chart.fill.Gradient then
+                                local gradientFillRect = GradientFill:new(
+                                        Vector2(prevX, prevY),
+                                        Vector2(nextX, nextY),
+                                        self.position.y + rt.size.y,
+                                        customPalette.GradientStart.original,
+                                        customPalette.GradientEnd.original
+                                )
+                                gradientFillRect:setParent(rt)
+                            end
                         end
                     end
                 end
@@ -199,7 +202,7 @@ function Chart:createChartTexture()
                     local nextX = j * step
                     local nextY = rt.size.y - (serie.data[j + 1] - minVal) * stepY
 
-                    if nextX and nextY then
+                    if nextX and nextY and not rt.isExists then
                         local line = Line:new(Vector2(x, y), Vector2(nextX, nextY), customPalette.Foreground.element, 2)
                         line:setParent(rt)
                     end
