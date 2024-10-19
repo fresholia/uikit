@@ -16,6 +16,7 @@ ElementType = {
     SmoothLine = 'SmoothLine',
     Chart = 'Chart',
     RenderTexture = 'RenderTexture',
+    GradientFill = 'GradientFill',
     Input = 'Input',
     BaseInput = 'BaseInput',
     ButtonGroup = 'ButtonGroup',

@@ -1,6 +1,8 @@
 GradientFill = inherit(Element)
 
 function GradientFill:constructor(_, _, yOffset, color1, color2)
+    self.type = ElementType.GradientFill
+    
     self.yOffset = yOffset
     self.color1 = color1
     self.color2 = color2
