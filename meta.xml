@@ -54,6 +54,11 @@
     <script type="client" skip="true" src="core/elements/date-picker.theme.lua"/>
     <script type="client" skip="true" src="core/elements/date-picker.lua"/>
     <script type="client" skip="true" src="core/elements/blur.lua"/>
+    <script type="client" skip="true" src="core/elements/table.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/table.lua"/>
+    <script type="client" skip="true" src="core/elements/pagination.theme.lua"/>
+    <script type="client" skip="true" src="core/elements/pagination.lua"/>
+    <script type="client" skip="true" src="core/elements/skeleton.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.theme.lua"/>
     <script type="client" skip="true" src="core/elements/icon-button.lua"/>
     <script type="client" skip="true" src="core/elements/button-group.lua"/>

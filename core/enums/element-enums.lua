@@ -20,4 +20,7 @@ ElementType = {
     BaseInput = 'BaseInput',
     ButtonGroup = 'ButtonGroup',
     DatePicker = 'DatePicker',
+    Table = 'Table',
+    Pagination = 'Pagination',
+    Skeleton = 'Skeleton',
 }

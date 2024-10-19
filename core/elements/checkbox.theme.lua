@@ -9,5 +9,4 @@ function CheckboxTheme:constructor()
         [Element.size.Large] = { x = 12, y = 12, fontSize = 0.6 },
     })
     self:setProperty('font', Core.fonts.Regular.element)
-
 end

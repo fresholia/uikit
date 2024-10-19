@@ -24,7 +24,7 @@ function Tooltip:constructor(parent, content, tooltipSize, placement, color)
     self.theme = TooltipTheme:new()
     self.color = color or Element.color.Dark
     self.placement = placement or Tooltip.placement.Top
-    self.tooltipSize = tooltipSize
+    self.tooltipSize = tooltipSize or Element.size.Medium
 
     self:setParent(parent)
     self:calculateSize()

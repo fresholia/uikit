@@ -266,6 +266,7 @@ end
 
 function Tabs:doPulse()
     self:removeChildrenExcept(ElementType.Tab)
+
     if self.activeTabRect then
         self.activeTabRect:destroy()
     end

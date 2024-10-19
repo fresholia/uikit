@@ -28,6 +28,11 @@ function Button:constructor(_, _, label, variant, color, buttonSize)
     self:createEvent(Element.events.OnCursorLeave, bind(self.onCursorLeave, self))
 end
 
+function Button:setLabel(label)
+    self.label = label
+    self.childrenMap.text:setText(label)
+end
+
 function Button:setStartContent(content)
     self.startContent = content
     self:doPulse()
@@ -44,7 +49,7 @@ function Button:setColor(color)
 end
 
 function Button:doPulse()
-    self:removeChildrenExcept(ElementType.Icon)
+    self:removeChildrenExcept({ ElementType.DatePicker, ElementType.Icon })
 
     local padding = self.theme:getProperty('padding')[self.buttonSize or Element.size.Medium]
 
@@ -95,11 +100,9 @@ function Button:doPulse()
     local borderRadius = self.theme:getProperty('borderRadius') or self.size.y * 0.2
 
     local bg = Rectangle:new(self.position, self.size, borderRadius)
-    bg:setColor(self.disabled and colorPalette.BackgroundDisabled.element or colorPalette.Background.element)
+    bg:setColor((self.disabled or self.startContent) and colorPalette.BackgroundDisabled.element or colorPalette.Background.element)
     bg:setParent(self)
-    bg:setRenderMode(
-            self.variant == Button.variants.Light and Element.renderMode.Hidden or Element.renderMode.Normal
-    )
+    bg:setRenderMode(self.variant == Button.variants.Light and Element.renderMode.Hidden or Element.renderMode.Normal)
     bg:setRenderIndex(-1)
 
     self.childrenMap.bg = bg
@@ -109,8 +112,9 @@ function Button:doPulse()
         self.startContent:setSize(contentSize)
         self.startContent:setPosition(Vector2(self.position.x + padding.x / 2, self.position.y + padding.y / 2))
         self.startContent:setColor(colorPalette.Foreground.element)
-        self.startContent:setRenderIndex(2)
+        self.startContent:setRenderIndex(10)
         self.startContent:setParent(self)
+        self.startContent:setPostGUI(true)
 
         textX = self.startContent.position.x + self.startContent.size.x + padding.x / 2
     end
@@ -134,6 +138,8 @@ function Button:doPulse()
         text:setParent(self)
         text:setRenderIndex(100)
         text:setColor(colorPalette.Foreground.element)
+
+        self.childrenMap.text = text
     end
 end
 

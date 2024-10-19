@@ -172,11 +172,25 @@ function Element:removeChildren()
     self.children = {}
 end
 
-function Element:removeChildrenExcept(type)
+function Element:removeChildrenExcept(elementType)
+    if type(elementType) == 'string' then
+        elementType = { elementType }
+    end
+
     for _, child in pairs(self.children) do
         local childElement = Core:hasElement(child)
-        if childElement and childElement.type ~= type then
-            childElement:destroy()
+        if childElement then
+            local remove = true
+            for _, et in ipairs(elementType) do
+                if childElement.type == et then
+                    remove = false
+                    break
+                end
+            end
+
+            if remove then
+                childElement:destroy()
+            end
         end
     end
 end

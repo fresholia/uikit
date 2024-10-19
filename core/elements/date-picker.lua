@@ -191,6 +191,8 @@ function DatePicker:onDayClick(dayRect, day)
     self.selectedDate = day
     self.isRendering = false
     self:removeChildren()
+
+    self:virtual_callEvent(Element.events.OnChange, day)
 end
 
 function DatePicker:isSelected(date)

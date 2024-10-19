@@ -17,7 +17,6 @@ end
 
 function Tab:doPulse()
     -- # TODO: Fix tab child(ren) visibility
-
 end
 
 function Tab:setActive(isActive)
