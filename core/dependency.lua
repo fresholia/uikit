@@ -25,6 +25,15 @@ end
 function Dependency:inject(sourceResource, ...)
     local modules = { ... }
 
+    if modules[1] == '*' then
+        for moduleAlias, requiredModules in pairs(self.modules) do
+            self:inject(sourceResource, moduleAlias)
+            self:inject(sourceResource, unpack(requiredModules))
+        end
+
+        return
+    end
+
     if not self.injectedModulesMap[sourceResource] then
         self.injectedModulesMap[sourceResource] = {}
     end
