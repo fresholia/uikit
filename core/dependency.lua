@@ -8,16 +8,47 @@
 
 Dependency = {}
 
-function Dependency:new()
+function Dependency:new(...)
     return new(self, ...)
 end
 
+function Dependency:constructor()
+    self.modules = {}
+
+    self.injectedModulesMap = {}
+end
+
 function Dependency:addModule(moduleAlias, requiredModules)
-    if not self.modules then
-        self.modules = {}
+    self.modules[moduleAlias] = requiredModules
+end
+
+function Dependency:inject(sourceResource, ...)
+    local modules = { ... }
+
+    if not self.injectedModulesMap[sourceResource] then
+        self.injectedModulesMap[sourceResource] = {}
     end
 
-    self.modules[moduleAlias] = requiredModules
+    local injectToStr = ''
+    for i = 1, #modules do
+        local module = modules[i]
+        if module then
+            if not self.injectedModulesMap[sourceResource][module] then
+                self.injectedModulesMap[sourceResource][module] = true
+
+                if Exporter.modules[module] then
+                    local requiredModules = self.modules[module]
+                    if requiredModules then
+                        injectToStr = injectToStr .. self:inject(sourceResource, unpack(requiredModules))
+                    end
+
+                    injectToStr = injectToStr .. ' ' .. Exporter.modules[module]
+                end
+            end
+        end
+    end
+
+    return injectToStr
 end
 
 Dependency = Dependency:new()
@@ -40,7 +71,11 @@ Dependency:addModule(ElementType.RenderTexture, {})
 Dependency:addModule(ElementType.Skeleton, {})
 Dependency:addModule(ElementType.Tab, {})
 Dependency:addModule(ElementType.Tabs, { ElementType.Tab, ElementType.Rectangle, ElementType.Button, ElementType.Icon })
-Dependency:addModule(ElementType.Table, { ElementType.Rectangle, ElementType.Text, ElementType.IconButton })
+Dependency:addModule(ElementType.Table, { ElementType.Rectangle, ElementType.Text, ElementType.IconButton, ElementType.Pagination })
 Dependency:addModule(ElementType.Text, {})
 Dependency:addModule(ElementType.Tooltip, { ElementType.Rectangle, ElementType.Text })
 Dependency:addModule(ElementType.Window, { ElementType.Rectangle, ElementType.Text, ElementType.IconButton })
+
+function import(...)
+    return Dependency:inject(sourceResource, ...)
+end

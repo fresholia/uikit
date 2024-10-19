@@ -5,7 +5,7 @@ function IconGen:new(...)
 end
 
 function IconGen:constructor()
-    self.iconsPath = getOriginalPath('/public/fonts/fa/icons.json')
+    self.iconsPath = getOriginalPath('core/elements/icon/icons.json')
     self.unicodes = {}
     self.ticks = {}
 

@@ -130,11 +130,6 @@ ClientEventNames = {
 local events = {}
 local workers = {}
 
----@param workerName string
----@param workerFunction function
----@param interval number
----@param repetitions number
----@return Timer
 function createWorker(workerName, workerFunction, interval, repetitions)
     assert(type(workerName) == 'string', 'Worker name must be a string.')
     assert(type(workerFunction) == 'function', 'Worker function must be a function.')
@@ -151,8 +146,6 @@ function createWorker(workerName, workerFunction, interval, repetitions)
     return timer
 end
 
----@param workerName string
----@return void
 function removeWorker(workerName)
     if not workers[workerName] then
         return false, 'Worker not found.'
@@ -161,9 +154,6 @@ function removeWorker(workerName)
     return killTimer(workers[workerName])
 end
 
----@param eventName string
----@param eventFunction function
----@return void
 function createEvent(eventName, eventFunction, eventRoot)
     addEvent(eventName, true)
     addEventHandler(eventName, eventRoot or resourceRoot, eventFunction)
@@ -171,10 +161,6 @@ function createEvent(eventName, eventFunction, eventRoot)
     events[eventName] = eventFunction
 end
 
----@param eventName string
----@param sourceEvent any
----@param eventFunction function
----@return boolean, string
 function createNativeEvent(eventName, sourceEvent, eventFunction)
     if isEventHandlerAdded(eventName, sourceEvent, eventFunction) then
         return false, 'Event handler already exists.'
@@ -183,10 +169,6 @@ function createNativeEvent(eventName, sourceEvent, eventFunction)
     return addEventHandler(eventName, sourceEvent, eventFunction)
 end
 
----@param eventName string
----@param sourceEvent function
----@param eventFunction function
----@return void
 function removeNativeEvent(eventName, sourceEvent, eventFunction)
     if not isEventHandlerAdded(eventName, sourceEvent, eventFunction) then
         return false, 'Event handler not found.'
@@ -195,8 +177,6 @@ function removeNativeEvent(eventName, sourceEvent, eventFunction)
     return removeEventHandler(eventName, sourceEvent, eventFunction)
 end
 
----@param eventName string
----@return void
 function emitEvent(eventName, entity, ...)
     if events[eventName] then
         return triggerEvent(eventName, resourceRoot, ...)
