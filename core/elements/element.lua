@@ -225,7 +225,11 @@ function Element:setVisible(visible, recursive)
         for _, child in pairs(self.children) do
             local childElement = Core:hasElement(child)
             if childElement then
-                childElement:setVisible(visible, recursive)
+                if self.type == ElementType.Tab and not self.isActive then
+                    childElement:setVisible(false, recursive)
+                else
+                    childElement:setVisible(visible, recursive)
+                end
             end
         end
     end

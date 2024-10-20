@@ -283,7 +283,7 @@ function Tabs:doPulse()
     tabsRect:setColor(color.Background.element)
 
     local contentRect = Rectangle:new(layout.contentPosition, layout.contentSize, self.theme:getProperty('borderRadius'))
-    contentRect:setParent(self)
+    contentRect:setParent(tabsRect)
     contentRect:setRenderIndex(-1)
     contentRect:setColor(color.Background.element)
     contentRect:setRenderMode(self.variant == Tabs.variants.Light and Element.renderMode.Hidden or Element.renderMode.Normal)
@@ -311,12 +311,8 @@ function Tabs:doPulse()
                     self.color,
                     self.tabsSize
             )
-            tabButton:setParent(contentRect)
+            tabButton:setParent(bgRect)
             tabButton:setRenderIndex(10)
-
-            if tab.icon then
-                tabButton:setStartContent(tab.icon)
-            end
 
             tabButton:createEvent(Element.events.OnClick, bind(self.setActiveTab, self, tab))
 
@@ -337,6 +333,10 @@ function Tabs:doPulse()
                 position = tabButton.position,
                 size = tabButton.size
             }
+
+            if tab.icon then
+                tabButton:setStartContent(Icon:new(Vector2(0, 0), Vector2(32, 32), tab.icon, Icon.style.Light))
+            end
 
             tabsWidth = tabsWidth + tabButton.size.x + gap
         end
