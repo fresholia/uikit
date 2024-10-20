@@ -1,6 +1,6 @@
 Checkbox = inherit(Element)
 
-function Checkbox:constructor(position, size, label, color, isSelected)
+function Checkbox:constructor(_, _, label, color, isSelected)
     self.type = ElementType.Checkbox
 
     self.label = label
@@ -25,11 +25,12 @@ function Checkbox:constructor(position, size, label, color, isSelected)
 
     local indeterminateIcon = Icon:new(Vector2(btn.position.x + btn.size.x / 2 - 8, btn.position.y + btn.size.y / 2 - 8), Vector2(16, 16), 'minus', Icon.style.Solid)
     indeterminateIcon:setParent(self)
-    indeterminateIcon:setVisible(self.isIndeterminate)
+    indeterminateIcon:setRenderMode(Element.renderMode.Hidden)
 
     self.indeterminateIcon = indeterminateIcon
 
     local icon = Icon:new(Vector2(btn.position.x + btn.size.x / 2 - 8, btn.position.y + btn.size.y / 2 - 8), Vector2(16, 16), 'check', Icon.style.Solid)
+    icon:setRenderMode(self.isSelected and Element.renderMode.Normal or Element.renderMode.Hidden)
     icon:setParent(self)
 
     self.icon = icon
@@ -54,8 +55,8 @@ end
 function Checkbox:setSelected(isSelected)
     self.isSelected = isSelected
 
-    self.icon:setVisible(self.isSelected)
-    self.indeterminateIcon:setVisible(false)
+    self.icon:setRenderMode(self.isSelected and Element.renderMode.Normal or Element.renderMode.Hidden)
+    self.indeterminateIcon:setRenderMode(Element.renderMode.Hidden)
 
     self.btn:setColor(self.isSelected and self.color or Element.color.Dark)
 end
@@ -63,10 +64,10 @@ end
 function Checkbox:setIndeterminate(isIndeterminate)
     self.isIndeterminate = isIndeterminate
 
-    self.indeterminateIcon:setVisible(self.isIndeterminate)
+    self.indeterminateIcon:setRenderMode(self.isIndeterminate and Element.renderMode.Normal or Element.renderMode.Hidden)
 
     if self.isIndeterminate then
-        self.icon:setVisible(false)
+        self.icon:setRenderMode(Element.renderMode.Hidden)
     end
 
     self.btn:setColor(self.isSelected and self.color or Element.color.Dark)
@@ -75,7 +76,7 @@ end
 function Checkbox:onSelectionChange()
     self.isSelected = not self.isSelected
 
-    self.icon:setVisible(self.isSelected)
+    self.icon:setRenderMode(self.isSelected and Element.renderMode.Normal or Element.renderMode.Hidden)
 
     self:virtual_callEvent(Element.events.OnChange, self.isSelected)
 end

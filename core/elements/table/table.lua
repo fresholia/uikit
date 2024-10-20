@@ -124,6 +124,11 @@ function Table:updateAllCheckbox()
         return
     end
 
+    if self.isLoading then
+        self.allCheckbox:setDisabled(true)
+        return
+    end
+
     if self.selectMode == Table.selectMode.Exclude then
         if #self.selections == 0 then
             self.allCheckbox:setSelected(true)
@@ -138,8 +143,8 @@ function Table:updateAllCheckbox()
             self.allCheckbox:setSelected(false)
             self.allCheckbox:setIndeterminate(true)
         end
-    else
-        if #self.selections == #self.rows then
+    elseif self.selectMode == Table.selectMode.Include then
+        if #self.selections == #self.rows and #self.rows > 0 then
             self.selectMode = Table.selectMode.Exclude
             self.selections = {}
 
@@ -245,9 +250,7 @@ function Table:doPulse()
                 '',
                 self.selectionColor
         )
-        selectAllCheckbox:setSelected(false)
         selectAllCheckbox:setParent(headerRect)
-        selectAllCheckbox:setDisabled(#self.rows == 0 or self.isLoading)
         selectAllCheckbox:createEvent(Element.events.OnChange, bind(self.onAllSelectionChange, self))
 
         self.allCheckbox = selectAllCheckbox
