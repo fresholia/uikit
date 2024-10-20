@@ -50,6 +50,7 @@ local function createBasicWindow()
             Element.color.Primary,
             Element.size.Medium
     )
+    closeButton:setParent(window)
     closeButton:createEvent(Element.events.OnClick, function()
         window:destroy()
         outputChatBox('Window closed!')
