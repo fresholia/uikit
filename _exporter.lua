@@ -9,6 +9,7 @@ for type in pairs(ElementType) do
     _G[type] = {}
 
     _G[type].new = function(self)
+        outputChatBox(type .. ' is not imported. Please add this to the top line: import(\'' .. type .. '\')')
         error(type .. ' is not imported. Please add this to the top line: import(\'' .. type .. '\')')
     end
 end
@@ -20,11 +21,21 @@ function import(...)
 end
 ]]
 
+Exporter.checkOOPStr = [[
+if not isOOPEnabled() then
+    outputChatBox('OOP is not enabled. To use UIKit, you need to enable OOP. Please add this to the top line of meta.xml: <oop>true</oop>')
+    error('OOP is not enabled. To use UIKit, you need to enable OOP. Please add this to the top line of meta.xml: <oop>true</oop>')
+    return
+end
+]]
+
 Exporter.modules = {}
 
 createNativeEvent(ClientEventNames.onClientResourceStart, resourceRoot, function()
     local xml = XML.load('meta.xml')
     local nodes = xml:getChildren()
+
+    table.insert(Exporter.injection, Exporter.checkOOPStr)
 
     for i, node in ipairs(nodes) do
         if node:getName() == 'script' then

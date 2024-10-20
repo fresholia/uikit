@@ -27,6 +27,10 @@ To use UIKit in your scripts, you need to require the `uikit` module in your scr
 
 1. Add this to the top line of the first running lua file of your script:
 
+#### IMPORTANT: ####
+
+OOP must be turned on, on your resource to use this module.
+
 ```lua
 loadstring(exports.uikit:getModule())()
 ```

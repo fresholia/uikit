@@ -2,6 +2,10 @@ local Renderer = {}
 Renderer.debugEnabled = false
 
 function Renderer.render()
+    if not Core or not Core.elementsArray then
+        return
+    end
+
     if Core.animate then
         Core.animate:updateFrame()
     end

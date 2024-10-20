@@ -93,6 +93,10 @@ function Pagination:onSwitch(pageNumber)
 
     pageNumber = clamp(tonumber(pageNumber), 1, self.total)
 
+    if pageNumber == self.current then
+        return
+    end
+
     self.current = pageNumber
     self:doPulse()
 
