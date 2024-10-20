@@ -26,12 +26,12 @@ function Dependency:inject(sourceResource, ...)
     local modules = { ... }
 
     if modules[1] == '*' then
-        for moduleAlias, requiredModules in pairs(self.modules) do
-            self:inject(sourceResource, moduleAlias)
-            self:inject(sourceResource, unpack(requiredModules))
+        modules = {}
+        for module, _ in pairs(self.modules) do
+            table.insert(modules, module)
         end
 
-        return
+        return self:inject(sourceResource, unpack(modules))
     end
 
     if not self.injectedModulesMap[sourceResource] then
@@ -65,6 +65,7 @@ Dependency = Dependency:new()
 Dependency:addModule(ElementType.BaseInput, { ElementType.Icon, ElementType.Rectangle, ElementType.Text })
 Dependency:addModule(ElementType.Blur, {})
 Dependency:addModule(ElementType.Button, { ElementType.Rectangle, ElementType.Text, ElementType.Icon })
+Dependency:addModule(ElementType.ButtonGroup, { ElementType.Button })
 Dependency:addModule(ElementType.Chart, { ElementType.RenderTexture, ElementType.Line, ElementType.GradientFill, ElementType.Rectangle, ElementType.Tooltip, ElementType.Text, ElementType.Text })
 Dependency:addModule(ElementType.Checkbox, { ElementType.Button, ElementType.Icon, ElementType.Text })
 Dependency:addModule(ElementType.DatePicker, { ElementType.Rectangle, ElementType.Text, ElementType.IconButton })
