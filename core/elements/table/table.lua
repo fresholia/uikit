@@ -222,7 +222,7 @@ function Table:doPulse()
     )
 
     local headerRect = Rectangle:new(headerPosition, headerSize, borderRadius / 1.6, headerColor.element)
-    headerRect:setParent(self)
+    headerRect:setParent(rect)
 
     local contentSize = Vector2(self.size.x - innerPadding.x * 2, self.size.y - headerSize.y - innerPadding.y * 2)
     local contentPosition = Vector2(
@@ -293,7 +293,7 @@ function Table:doPulse()
     elseif #self.rows == 0 then
         local noDataIcon = Icon:new(Vector2(contentPosition.x + contentSize.x / 2 - 50, contentPosition.y + contentSize.y / 2 - 50),
                 Vector2(100, 100), 'empty-set', Icon.style.Solid)
-        noDataIcon:setParent(self)
+        noDataIcon:setParent(rect)
         noDataIcon:setColor(headerForegroundColor.element)
 
         return
@@ -324,7 +324,7 @@ function Table:doPulse()
         local rowSize = Vector2(contentSize.x, rowHeight)
 
         local rowRect = Rectangle:new(rowPosition, rowSize, 0, bgColor.element)
-        rowRect:setParent(self)
+        rowRect:setParent(rect)
 
         if self.isSelectable then
             local selectCheckbox = Checkbox:new(
