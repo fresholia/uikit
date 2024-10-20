@@ -14,6 +14,7 @@
     <script type="shared" skip="true" src="vendor/classlib.lua"/>
 
     <script type="server" src="server/updater.lua"/>
+    <script type="server" src="server/main.lua"/>
 
     <script type="client" skip="true" src="core/utils/enums/element-enums.lua"/>
     <script type="client" skip="true" src="core/utils/utils.lua"/>

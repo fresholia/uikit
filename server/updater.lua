@@ -35,9 +35,17 @@ function Updater:complete()
         File.delete(self.hashesPath)
     end
 
+    if File.exists(self.filePath) then
+        File.delete(self.filePath)
+    end
+
     local file = File.new(self.hashesPath)
     file:write(toJSON(self.hashes))
     file:close()
+
+    local versionFile = File.new(self.filePath)
+    versionFile:write(self.newVersion)
+    versionFile:close()
 
     outputDebugString('UIKit: Update completed.')
 
@@ -116,7 +124,7 @@ end
 function Updater:downloadHashes()
     fetchRemote('https://api.github.com/repos/' .. self.repository .. '/git/trees/' .. self.branch .. '?recursive=1', function(data, errno)
         if errno ~= 0 then
-            outputDebugString('UIKit: Failed to fetch files')
+            outputDebugString('UIKit: Failed to fetch files - ERR: ' .. errno)
             return
         end
 
@@ -150,7 +158,9 @@ function Updater:onVersionCheck(data, errno)
             return
         end
 
-        outputDebugString('UIKit: New version available, updating...')
+        self.newVersion = data
+
+        outputDebugString('UIKit: New version available (' .. self.newVersion .. '), updating...')
 
         self:downloadHashes()
     end
