@@ -67,9 +67,9 @@ function Table:setIsSelectable(isSelectable)
     self.isSelectable = isSelectable
 end
 
-function Table:addColumn(column)
+function Table:addColumn(column, withSearch, withSort)
     local uid = string.random(10)
-    table.insert(self.columns, { uid = uid, column = column })
+    table.insert(self.columns, { uid = uid, column = column, withSearch = withSearch, withSort = withSort })
 
     return uid
 end
@@ -226,6 +226,33 @@ function Table:onAllSelectionChange()
     self:updateRows()
 end
 
+function Table:onSort(i)
+    if not self.sortActions then
+        self.sortActions = {}
+    end
+
+    if not self.sortActions then
+        self.sortActions[i] = 'asc'
+    else
+        self.sortActions[i] = self.sortActions[i] == 'asc' and 'desc' or 'asc'
+    end
+
+    local sortAction = self.sortActions[i]
+
+    table.sort(self.rows, function(a, b)
+        local cellA = a and a.cells[i].cell or ''
+        local cellB = b and b.cells[i].cell or ''
+
+        if sortAction == 'asc' then
+            return cellA < cellB
+        else
+            return cellA > cellB
+        end
+    end)
+
+    self:updateRows()
+end
+
 function Table:reCalculateVectors()
     local headerHeight = self.theme:getProperty('headerHeight')
     local innerPadding = self.theme:getProperty('innerPadding')
@@ -277,6 +304,7 @@ function Table:createHeader()
     local borderRadius = self.theme:getProperty('borderRadius')
     local innerPadding = self.theme:getProperty('innerPadding')
     local headerForegroundColor = self.theme:getColor('headerForegroundColor')
+    local headerForegroundIconColor = self.theme:getColor('headerForegroundIconColor')
     local contentPosition, contentSize = self.vectors.contentPosition, self.vectors.contentSize
 
     local headerRect = Rectangle:new(headerPosition, headerSize, borderRadius / 1.6, headerColor.element)
@@ -310,6 +338,41 @@ function Table:createHeader()
                 nil, Text.alignment.LeftCenter)
         columnLabel:setParent(headerRect)
         columnLabel:setColor(headerForegroundColor.element)
+
+        if column.withSearch or column.withSort then
+            local textWidth = dxGetTextWidth(column.column:upper(), 0.4, Core.fonts.Regular.element) + 5
+
+            if column.withSearch then
+                local searchIcon = IconButton:new(
+                        Vector2(columnPosition.x + textWidth, columnPosition.y + columnSize.y / 2 - 24 / 2),
+                        Vector2(20, 20),
+                        Icon:new(Vector2(0, 0), Vector2(20, 20), 'search', Icon.style.Light, nil,
+                                headerForegroundIconColor.element, headerForegroundIconColor.element),
+                        Button.variants.Light,
+                        Element.color.Dark,
+                        Element.size.Small
+                )
+                searchIcon:setParent(headerRect)
+                Tooltip:new(searchIcon, 'Arama', Element.size.Medium)
+
+                textWidth = textWidth + 24
+            end
+
+            if column.withSort then
+                local sortIcon = IconButton:new(
+                        Vector2(columnPosition.x + textWidth, columnPosition.y + columnSize.y / 2 - 24 / 2),
+                        Vector2(20, 20),
+                        Icon:new(Vector2(0, 0), Vector2(24, 24), 'sort', Icon.style.Light, nil,
+                                headerForegroundIconColor.element, headerForegroundIconColor.element),
+                        Button.variants.Light,
+                        Element.color.Dark,
+                        Element.size.Small
+                )
+                sortIcon:setParent(headerRect)
+                Tooltip:new(sortIcon, 'Sırala', Element.size.Medium)
+                sortIcon:createEvent(Element.events.OnClick, bind(self.onSort, self, i))
+            end
+        end
     end
 end
 
