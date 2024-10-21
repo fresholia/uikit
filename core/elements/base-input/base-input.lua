@@ -735,6 +735,8 @@ function BaseInput:reRender()
     self.textElement:setText(value)
     self:updateCaretPosition()
 
+    self:virtual_callEvent(Element.events.OnChange, value:gsub('#%x%x%x%x%x%x', ''))
+
     if self.isClearable and self.endContent then
         self.endContent:setRenderMode(self:isValueEmpty() and Element.renderMode.Hidden or Element.renderMode.Normal)
     end

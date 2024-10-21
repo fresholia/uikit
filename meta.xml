@@ -63,6 +63,8 @@
     <script type="client" skip="true" module="Blur" src="core/elements/blur/blur.lua"/>
     <script type="client" skip="true" module="Table" src="core/elements/table/table.theme.lua"/>
     <script type="client" skip="true" module="Table" src="core/elements/table/table.lua"/>
+    <script type="client" skip="true" module="Popover" src="core/elements/popover/popover.theme.lua"/>
+    <script type="client" skip="true" module="Popover" src="core/elements/popover/popover.lua"/>
     <script type="client" skip="true" module="Pagination"
             src="core/elements/pagination/pagination.theme.lua"/>
     <script type="client" skip="true" module="Pagination"

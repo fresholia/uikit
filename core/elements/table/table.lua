@@ -226,6 +226,32 @@ function Table:onAllSelectionChange()
     self:updateRows()
 end
 
+function Table:onSearch(i, value)
+    if not value or value == '' then
+        if self.originalRows then
+            self.rows = self.originalRows
+            self.originalRows = nil
+
+            self:updateRows()
+        end
+        return
+    end
+
+    if not self.originalRows then
+        self.originalRows = self.rows
+    end
+
+    self.rows = {}
+
+    for _, row in ipairs(self.originalRows) do
+        if utf8.find(tostring(row.cells[i].cell):lower(), value:lower(), 1, true) then
+            table.insert(self.rows, row)
+        end
+    end
+
+    self:updateRows()
+end
+
 function Table:onSort(i)
     if not self.sortActions then
         self.sortActions = {}
@@ -309,6 +335,7 @@ function Table:createHeader()
 
     local headerRect = Rectangle:new(headerPosition, headerSize, borderRadius / 1.6, headerColor.element)
     headerRect:setParent(self.rect)
+    headerRect:setRenderIndex(10)
     self.headerRect = headerRect
 
     if self.isSelectable then
@@ -354,6 +381,19 @@ function Table:createHeader()
                 )
                 searchIcon:setParent(headerRect)
                 Tooltip:new(searchIcon, 'Arama', Element.size.Medium)
+
+                local popover = Popover:new(Vector2(Padding.Large * 11, Padding.Medium * 4.6), searchIcon, Popover.placement.BottomStart, Element.color.Dark)
+                local searchInput = Input:new(
+                        popover.content.position,
+                        popover.content.size,
+                        BaseInput.variants.Solid,
+                        Element.color.Dark,
+                        Element.size.Medium
+                )
+                searchInput:setParent(popover)
+                searchInput:setLabel('Ara')
+                searchInput:setIsClearable(true)
+                searchInput:createEvent(Element.events.OnChange, bind(self.onSearch, self, i))
 
                 textWidth = textWidth + 24
             end
@@ -456,7 +496,7 @@ function Table:createContent()
                     nil, Text.alignment.LeftCenter)
             cellLabel:setParent(contentRect)
             cellLabel:setRenderMode(Element.renderMode.Hidden)
-            cellLabel:setRenderIndex(998)
+            cellLabel:setRenderIndex(1)
 
             self.rowElements[i].cells[j] = cellLabel
         end

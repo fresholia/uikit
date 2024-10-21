@@ -24,4 +24,5 @@ ElementType = {
     Table = 'Table',
     Pagination = 'Pagination',
     Skeleton = 'Skeleton',
+    Popover = 'Popover',
 }
