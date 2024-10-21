@@ -67,12 +67,16 @@ function Core:onClickElement(button, state, absX, absY)
         return
     end
 
-    if not self.elements then
+    if not self.elements or type(self.elements) ~= 'table' then
         return
     end
 
-    for _, element in pairs(self.elements) do
-        if element and element:isVisible() then
+    for key, element in pairs(self.elements) do
+        if not key or not element then
+            return
+        end
+
+        if element and type(element) == 'table' and element:isVisible() then
             if self:inArea(element.position, element.size) and not element:isDisabled() then
                 if state == 'up' then
                     element:virtual_callEvent(Element.events.OnClick)
@@ -130,6 +134,10 @@ function Core:onCursorMove(_, _, cursorX, cursorY)
 end
 
 function Core:pushElement(key, element)
+    assert(not self.elements[key], 'Element with key ' .. key .. ' already exists.')
+    assert(type(key) == 'string', 'Key must be a string.')
+    assert(type(element) == 'table', 'Element must be a table.')
+
     self.elements[key] = element
 end
 
@@ -138,7 +146,12 @@ function Core:hasElement(key)
 end
 
 function Core:removeElement(key)
-    self.elements[key] = nil
+    assert(type(key) == 'string', 'Key must be a string.')
+
+    if self.elements[key] then
+        self.elements[key] = nil
+        collectgarbage()
+    end
 end
 
 function Core:reOrderElements()

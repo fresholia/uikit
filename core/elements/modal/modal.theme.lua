@@ -28,9 +28,9 @@ function ModalTheme:constructor()
             fontSize = 0.6,
         },
     })
-    self:setProperty('borderRadius', 12)
-    self:setProperty('openDuration', 200)
-    self:setProperty('innerPadding', 20)
+    self:setProperty('borderRadius', BorderRadii.Medium)
+    self:setProperty('openDuration', AnimationDuration.Fast)
+    self:setProperty('innerPadding', Padding.XLarge)
 
     self:setProperty('headerSize', 40)
 

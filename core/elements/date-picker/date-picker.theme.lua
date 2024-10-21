@@ -1,9 +1,9 @@
 DatePickerTheme = inherit(Theme)
 
 function DatePickerTheme:constructor()
-    self:setProperty('borderRadius', 12)
+    self:setProperty('borderRadius', BorderRadii.Medium)
     self:setProperty('gap', 12)
-    self:setProperty('padding', { x = 12, y = 12 })
+    self:setProperty('padding', { x = Padding.Medium, y = Padding.Medium })
 
     self:setColor('background', self:combine('LAYOUT', 'Background', 1))
     self:setColor('backgroundHeader', self:combine('CONTENT', 1, 1))

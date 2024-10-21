@@ -3,8 +3,8 @@ BaseInputTheme = inherit(Theme)
 function BaseInputTheme:constructor()
     self:setProperty('font', Core.fonts.Regular.element)
     self:setProperty('padding', Core.globalPadding)
-    self:setProperty('borderRadius', 6)
-    self:setProperty('hoverDuration', 150)
+    self:setProperty('borderRadius', BorderRadii.Small)
+    self:setProperty('hoverDuration', AnimationDuration.Fast)
 
     self:setColor(Element.color.Primary, {
         Background = self:combine('PRIMARY', 500, 1),

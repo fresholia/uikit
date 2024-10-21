@@ -1,7 +1,7 @@
 SwitchTheme = inherit(Theme)
 
 function SwitchTheme:constructor()
-    self:setProperty('borderRadius', 10)
+    self:setProperty('borderRadius', BorderRadii.Medium)
 
     self:setColor(Element.color.Primary, {
         Background = self:combine('DARK', 800, 1),
@@ -81,9 +81,9 @@ function SwitchTheme:constructor()
         [Element.size.Large] = { x = 60, y = 24 },
     })
     self:setProperty('padding', {
-        [Element.size.Small] = { x = 4, y = 4, fontSize = 0.4 },
-        [Element.size.Medium] = { x = 4, y = 4, fontSize = 0.5 },
-        [Element.size.Large] = { x = 4, y = 4, fontSize = 0.6 },
+        [Element.size.Small] = { x = Padding.XSmall, y = Padding.XSmall, fontSize = 0.4 },
+        [Element.size.Medium] = { x = Padding.XSmall, y = Padding.XSmall, fontSize = 0.5 },
+        [Element.size.Large] = { x = Padding.XSmall, y = Padding.XSmall, fontSize = 0.6 },
     })
     self:setProperty('font', Core.fonts.Regular.element)
 end

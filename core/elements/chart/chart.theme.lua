@@ -1,11 +1,11 @@
 ChartTheme = inherit(Theme)
 
 function ChartTheme:constructor()
-    self:setProperty('borderRadius', 4)
-    self:setProperty('innerPadding', 6)
+    self:setProperty('borderRadius', BorderRadii.XSmall)
+    self:setProperty('innerPadding', Padding.Small)
     self:setProperty('chartPadding', {
-        x = 20,
-        y = 10,
+        x = Padding.XLarge,
+        y = Padding.Medium,
     })
 
     self:setColor(Element.color.Primary, {

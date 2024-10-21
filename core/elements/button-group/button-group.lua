@@ -57,11 +57,11 @@ function ButtonGroup:doPulse()
         )
         button:createEvent(Element.events.OnClick, bind(self.onSwitch, self, i, label))
         if i == 1 then
-            button.theme:setProperty('borderRadius', { tl = 4, tr = 0, br = 0, bl = 4 })
+            button.theme:setProperty('borderRadius', { tl = BorderRadii.XSmall, tr = 0, br = 0, bl = BorderRadii.XSmall })
         elseif i == #self.buttons then
-            button.theme:setProperty('borderRadius', { tl = 0, tr = 4, br = 4, bl = 0 })
+            button.theme:setProperty('borderRadius', { tl = 0, tr = BorderRadii.XSmall, br = BorderRadii.XSmall, bl = 0 })
         else
-            button.theme:setProperty('borderRadius', 0)
+            button.theme:setProperty('borderRadius', BorderRadii.None)
         end
 
         self.localButtons[i] = button

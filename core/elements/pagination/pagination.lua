@@ -15,6 +15,12 @@ function Pagination:constructor(_, _, color, buttonSize, total, current, boundar
 
     self.dots = { '...' }
 
+    self:createEvent(Element.events.OnClick, bind(self.onClick, self))
+    self:doPulse()
+end
+
+function Pagination:setTotal(total)
+    self.total = total
     self:doPulse()
 end
 
@@ -86,6 +92,17 @@ function Pagination:calculatePagination()
     )
 end
 
+function Pagination:onClick()
+    for i = 1, #self.buttonPositions do
+        local button = self.buttonPositions[i]
+
+        if Core:inArea(button.position, button.size) then
+            self:onSwitch(button.pageNumber)
+            break
+        end
+    end
+end
+
 function Pagination:onSwitch(pageNumber)
     if not tonumber(pageNumber) then
         return
@@ -97,10 +114,9 @@ function Pagination:onSwitch(pageNumber)
         return
     end
 
+    self:virtual_callEvent(Element.events.OnChange, pageNumber)
     self.current = pageNumber
     self:doPulse()
-
-    self:virtual_callEvent(Element.events.OnChange, pageNumber)
 end
 
 function Pagination:doPulse()
@@ -116,16 +132,23 @@ function Pagination:doPulse()
     local buttonPosition = Vector2(self.position.x + self.size.x / 2 - (#paginationData * buttonSize.x) / 2 - (#paginationData * padding.x / 2),
             self.position.y)
 
+    self.buttonPositions = {}
+
     for i = 1, #paginationData do
         local pageNumber = paginationData[i]
 
         local bgRect = Rectangle:new(buttonPosition, buttonSize, borderRadius, color.Background.element)
         bgRect:setParent(self)
         bgRect:setColor(self.current == pageNumber and color.Background.element or color.BackgroundActive.element)
-        bgRect:createEvent(Element.events.OnClick, bind(self.onSwitch, self, pageNumber))
 
         local text = Text:new(buttonPosition, buttonSize, tostring(pageNumber), font, padding.fontSize, color.Foreground.element, Text.alignment.Center)
         text:setParent(bgRect)
+
+        self.buttonPositions[i] = {
+            position = buttonPosition,
+            size = buttonSize,
+            pageNumber = pageNumber
+        }
 
         buttonPosition = Vector2(buttonPosition.x + buttonSize.x + padding.x / 2, buttonPosition.y)
     end

@@ -23,6 +23,7 @@
     <script type="client" skip="true" src="core/theme/palette.lua"/>
     <script type="client" skip="true" src="core/theme/theme.lua"/>
     <script type="client" skip="true" src="core/theme/font.lua"/>
+    <script type="client" skip="true" src="core/theme/variables.lua"/>
     <script type="client" skip="true" src="core/animate.lua"/>
     <script type="client" skip="true" src="core/core.lua"/>
     <script type="client" skip="true" ignore="true" src="core/workshop.lua"/>

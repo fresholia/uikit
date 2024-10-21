@@ -93,5 +93,5 @@ function TooltipTheme:constructor()
 
     self:setProperty('font', Core.fonts.Regular.element)
     self:setProperty('gap', 5)
-    self:setProperty('borderRadius', 3)
+    self:setProperty('borderRadius', BorderRadii.XSmall)
 end

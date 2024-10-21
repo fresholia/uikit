@@ -76,5 +76,5 @@ function ButtonTheme:constructor()
     })
 
     self:setProperty('font', Core.fonts.Regular.element)
-    self:setProperty('hoverDuration', 150)
+    self:setProperty('hoverDuration', AnimationDuration.Fast)
 end

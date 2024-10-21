@@ -59,6 +59,8 @@ function Element:new(...)
 end
 
 function Element:destroy(...)
+    Core:removeElement(self.id)
+    
     self:removeChildren()
 
     if self.parent then
@@ -72,7 +74,6 @@ function Element:destroy(...)
         self.theme:destroy()
     end
 
-    Core:removeElement(self.id)
     Core:reOrderElements()
     return delete(self, ...)
 end

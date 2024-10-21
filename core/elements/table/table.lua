@@ -27,11 +27,20 @@ function Table:constructor(_, _, selectionColor)
 
     self.selections = {}
     self.selectMode = Table.selectMode.Include
+
+    self.rowElements = {}
+
+    self:doPulse()
 end
 
 function Table:setIsLoading(isLoading)
     self.isLoading = isLoading
-    self:doPulse()
+
+    self.noDataIcon:setRenderMode(Element.renderMode.Hidden)
+
+    if self.spinnerIcon then
+        self.spinnerIcon:setRenderMode(isLoading and Element.renderMode.Normal or Element.renderMode.Hidden)
+    end
 end
 
 function Table:isRowSelected(row)
@@ -56,8 +65,6 @@ end
 
 function Table:setIsSelectable(isSelectable)
     self.isSelectable = isSelectable
-
-    self:doPulse()
 end
 
 function Table:addColumn(column)
@@ -65,6 +72,11 @@ function Table:addColumn(column)
     table.insert(self.columns, { uid = uid, column = column })
 
     return uid
+end
+
+function Table:updateColumns()
+    self:createHeader()
+    self:createContent()
 end
 
 function Table:addRow(...)
@@ -98,13 +110,22 @@ function Table:deleteColumn(uid)
 end
 
 function Table:onSelectPage(page)
+    if page < 1 then
+        page = 1
+    end
+
+    if page > math.ceil(#self.rows / self.maxRows) then
+        page = math.ceil(#self.rows / self.maxRows)
+    end
+
     self.currentPage = page
-    self:doPulse()
+
+    self:updateRows()
 end
 
 function Table:clear()
     self.rows = {}
-    self:doPulse()
+    self:updateRows()
 end
 
 function Table:getSelections()
@@ -165,8 +186,9 @@ function Table:updateAllCheckbox()
     end
 end
 
-function Table:onSelectionChange(row, isSelected)
-    if not row.checkbox then
+function Table:onSelectionChange(id, isSelected)
+    local row = self.rows[(self.currentPage - 1) * self.maxRows + id]
+    if not row then
         return
     end
 
@@ -201,24 +223,14 @@ function Table:onAllSelectionChange()
     self.selectMode = self.selectMode == Table.selectMode.Include and Table.selectMode.Exclude or Table.selectMode.Include
     self.selections = {}
     self:updateAllCheckbox()
+    self:updateRows()
 end
 
-function Table:doPulse()
-    self:removeChildren()
-
-    local bgColor = self.theme:getColor('backgroundColor')
-    local headerColor = self.theme:getColor('headerColor')
-    local headerForegroundColor = self.theme:getColor('headerForegroundColor')
-    local borderRadius = self.theme:getProperty('borderRadius')
-    local innerPadding = self.theme:getProperty('innerPadding')
-
+function Table:reCalculateVectors()
     local headerHeight = self.theme:getProperty('headerHeight')
-    local rowHeight = self.theme:getProperty('rowHeight')
-
+    local innerPadding = self.theme:getProperty('innerPadding')
     local selectableWidth = self.theme:getProperty('selectableWidth')
-
-    local rect = Rectangle:new(self.position, self.size, borderRadius, bgColor.element)
-    rect:setParent(self)
+    local rowHeight = self.theme:getProperty('rowHeight')
 
     local headerSize = Vector2(self.size.x - innerPadding.x * 2, headerHeight)
     local headerPosition = Vector2(
@@ -226,24 +238,52 @@ function Table:doPulse()
             self.position.y + innerPadding.y
     )
 
-    local headerRect = Rectangle:new(headerPosition, headerSize, borderRadius / 1.6, headerColor.element)
-    headerRect:setParent(rect)
-
-    local contentSize = Vector2(self.size.x - innerPadding.x * 2, self.size.y - headerSize.y - innerPadding.y * 2)
+    local contentSize = Vector2(self.size.x - innerPadding.x * 2, self.size.y - headerSize.y - innerPadding.y * 3)
     local contentPosition = Vector2(
             self.position.x + innerPadding.x,
             headerPosition.y + headerSize.y + innerPadding.y
     )
 
-    local maxRows = math.floor(contentSize.y / rowHeight)
+    if self.isSelectable then
+        contentSize = Vector2(contentSize.x - selectableWidth - innerPadding.x, contentSize.y)
+        contentPosition = Vector2(contentPosition.x + selectableWidth + innerPadding.x, contentPosition.y)
+    end
+
+    self.maxRows = math.floor(contentSize.y / rowHeight) - 1
+
+    if #self.rows > self.maxRows then
+        contentSize.y = contentSize.y - headerHeight - innerPadding.y
+        self.maxRows = math.floor(contentSize.y / rowHeight)
+    end
+
+    return {
+        headerSize = headerSize,
+        headerPosition = headerPosition,
+        contentSize = contentSize,
+        contentPosition = contentPosition
+    }
+end
+
+function Table:createHeader()
+    if self.headerRect then
+        self.headerRect:destroy()
+    end
+
+    self.headerElements = {}
+    self.vectors = self:reCalculateVectors()
+
+    local headerPosition, headerSize = self.vectors.headerPosition, self.vectors.headerSize
+    local headerColor = self.theme:getColor('headerColor')
+    local borderRadius = self.theme:getProperty('borderRadius')
+    local innerPadding = self.theme:getProperty('innerPadding')
+    local headerForegroundColor = self.theme:getColor('headerForegroundColor')
+    local contentPosition, contentSize = self.vectors.contentPosition, self.vectors.contentSize
+
+    local headerRect = Rectangle:new(headerPosition, headerSize, borderRadius / 1.6, headerColor.element)
+    headerRect:setParent(self.rect)
+    self.headerRect = headerRect
 
     if self.isSelectable then
-        headerSize = Vector2(headerSize.x - selectableWidth - innerPadding.x, headerSize.y)
-        contentSize = Vector2(contentSize.x - selectableWidth - innerPadding.x, contentSize.y)
-
-        headerPosition = Vector2(headerPosition.x + selectableWidth + innerPadding.x, headerPosition.y)
-        contentPosition = Vector2(contentPosition.x + selectableWidth + innerPadding.x, contentPosition.y)
-
         local selectAllCheckbox = Checkbox:new(
                 Vector2(self.position.x + innerPadding.x * 2, headerPosition.y + headerSize.y / 2 - 16 / 2),
                 Element.size.Small,
@@ -257,11 +297,11 @@ function Table:doPulse()
         self:updateAllCheckbox()
     end
 
-    local columnWidth = headerSize.x / #self.columns
+    self.columnWidth = contentSize.x / #self.columns
 
     for i, column in ipairs(self.columns) do
-        local columnPosition = Vector2(headerPosition.x + (columnWidth * (i - 1)) + innerPadding.x, headerPosition.y)
-        local columnSize = Vector2(columnWidth, headerSize.y)
+        local columnPosition = Vector2(contentPosition.x + (self.columnWidth * (i - 1)) + innerPadding.x, headerPosition.y)
+        local columnSize = Vector2(self.columnWidth, headerSize.y)
 
         local columnLabel = Text:new(columnPosition, columnSize,
                 column.column:upper(),
@@ -271,63 +311,59 @@ function Table:doPulse()
         columnLabel:setParent(headerRect)
         columnLabel:setColor(headerForegroundColor.element)
     end
+end
 
-    if self.isLoading then
-        for i = 0, maxRows - 1 do
-            local rowPosition = Vector2(contentPosition.x, contentPosition.y + i * rowHeight)
-            local rowSize = Vector2(contentSize.x, rowHeight)
-
-            for j = 0, #self.columns - 1 do
-                local column = self.columns[j + 1]
-                local columnPosition = Vector2(rowPosition.x + (columnWidth * j) + innerPadding.x, rowPosition.y + innerPadding.y)
-                local columnSize = Vector2(columnWidth * math.random(4, 8) / 10, rowSize.y - innerPadding.y / 2)
-
-                local skeletonRect = Skeleton:new(columnPosition, columnSize)
-                skeletonRect:setParent(self)
-            end
-        end
-
-        local spinnerIcon = Icon:new(Vector2(contentPosition.x + contentSize.x / 2 - 50, contentPosition.y + contentSize.y / 2 - 50),
-                Vector2(100, 100), 'spinner-third', Icon.style.Solid)
-        spinnerIcon:setParent(self)
-        spinnerIcon:setColor(headerForegroundColor.element)
-        spinnerIcon:rotate(true)
-        return
-    elseif #self.rows == 0 then
-        local noDataIcon = Icon:new(Vector2(contentPosition.x + contentSize.x / 2 - 50, contentPosition.y + contentSize.y / 2 - 50),
-                Vector2(100, 100), 'empty-set', Icon.style.Solid)
-        noDataIcon:setParent(rect)
-        noDataIcon:setColor(headerForegroundColor.element)
-
-        return
+function Table:createContent()
+    if self.contentRect then
+        self.contentRect:destroy()
     end
 
-    if #self.rows > maxRows then
-        contentSize.y = contentSize.y - headerHeight - innerPadding.y
-        maxRows = math.floor(contentSize.y / rowHeight)
+    self.vectors = self:reCalculateVectors()
 
-        local pagination = Pagination:new(
-                Vector2(self.position.x + innerPadding.x * 2, contentPosition.y + contentSize.y + innerPadding.y / 2),
-                Vector2(self.size.x - innerPadding.x * 2, headerHeight),
-                Element.color.Dark,
-                Element.size.Medium,
-                math.ceil(#self.rows / maxRows),
-                self.currentPage
-        )
-        pagination:setParent(rect)
-        pagination:createEvent(Element.events.OnChange, bind(self.onSelectPage, self))
-    end
+    local contentPosition, contentSize = self.vectors.contentPosition, self.vectors.contentSize
+    local rowHeight = self.theme:getProperty('rowHeight')
+    local innerPadding = self.theme:getProperty('innerPadding')
+    local headerHeight = self.theme:getProperty('headerHeight')
+    local headerForegroundColor = self.theme:getColor('headerForegroundColor')
 
-    local startRow = (self.currentPage - 1) * maxRows + 1
-    local endRow = math.min(startRow + maxRows - 1, #self.rows)
+    local contentRect = Rectangle:new(contentPosition, contentSize, 0, tocolor(255, 255, 255, 0))
+    contentRect:setParent(self.rect)
+    self.contentRect = contentRect
 
-    for i = startRow, endRow do
-        local row = self.rows[i]
-        local rowPosition = Vector2(contentPosition.x, contentPosition.y + (i - startRow) * rowHeight)
+    -- # TODO: Skeleton loader
+    local spinnerIcon = Icon:new(Vector2(contentPosition.x + contentSize.x / 2 - 50, contentPosition.y + contentSize.y / 2 - 50),
+            Vector2(100, 100), 'spinner-third', Icon.style.Solid)
+    spinnerIcon:setParent(contentRect)
+    spinnerIcon:setColor(headerForegroundColor.element)
+    spinnerIcon:rotate(true)
+    spinnerIcon:setRenderMode(Element.renderMode.Hidden)
+    spinnerIcon:setRenderIndex(999)
+    self.spinnerIcon = spinnerIcon
+
+    local noDataIcon = Icon:new(Vector2(contentPosition.x + contentSize.x / 2 - 50, contentPosition.y + contentSize.y / 2 - 50),
+            Vector2(100, 100), 'empty-set', Icon.style.Solid)
+    noDataIcon:setParent(contentRect)
+    noDataIcon:setColor(headerForegroundColor.element)
+    noDataIcon:setRenderMode(Element.renderMode.Normal)
+    noDataIcon:setRenderIndex(999)
+    self.noDataIcon = noDataIcon
+
+    local pagination = Pagination:new(
+            Vector2(self.position.x + innerPadding.x * 2, contentPosition.y + contentSize.y - innerPadding.y * 3),
+            Vector2(self.size.x - innerPadding.x * 2, headerHeight),
+            Element.color.Dark,
+            Element.size.Medium,
+            math.ceil(#self.rows / self.maxRows),
+            self.currentPage
+    )
+    pagination:setParent(contentRect)
+    pagination:createEvent(Element.events.OnChange, bind(self.onSelectPage, self))
+    pagination:setRenderMode(Element.renderMode.Hidden)
+    self.pagination = pagination
+
+    for i = 1, self.maxRows do
+        local rowPosition = Vector2(contentPosition.x, contentPosition.y + (i - 1) * rowHeight)
         local rowSize = Vector2(contentSize.x, rowHeight)
-
-        local rowRect = Rectangle:new(rowPosition, rowSize, 0, bgColor.element)
-        rowRect:setParent(rect)
 
         if self.isSelectable then
             local selectCheckbox = Checkbox:new(
@@ -336,24 +372,84 @@ function Table:doPulse()
                     '',
                     self.selectionColor
             )
-            selectCheckbox:setParent(rowRect)
-            selectCheckbox:setSelected(self:isRowSelected(row))
-            selectCheckbox:createEvent(Element.events.OnChange, bind(self.onSelectionChange, self, row))
-
-            row.checkbox = selectCheckbox
+            selectCheckbox:setParent(contentRect)
+            selectCheckbox:setRenderMode(Element.renderMode.Hidden)
+            selectCheckbox:createEvent(Element.events.OnChange, bind(self.onSelectionChange, self, i))
         end
 
-        for j, cell in ipairs(row.cells) do
-            local column = self.columns[j]
-            local columnPosition = Vector2(rowPosition.x + (columnWidth * (j - 1)) + innerPadding.x, rowPosition.y)
-            local columnSize = Vector2(columnWidth, rowSize.y)
+        self.rowElements[i] = {
+            checkbox = selectCheckbox,
+            cells = {}
+        }
+
+        for j in ipairs(self.columns) do
+            local columnPosition = Vector2(rowPosition.x + (self.columnWidth * (j - 1)) + innerPadding.x, rowPosition.y)
+            local columnSize = Vector2(self.columnWidth, rowSize.y)
 
             local cellLabel = Text:new(columnPosition, columnSize,
-                    tostring(cell.cell),
+                    i .. ' - ' .. j,
                     Core.fonts.Regular.element,
                     0.45,
                     nil, Text.alignment.LeftCenter)
-            cellLabel:setParent(rowRect)
+            cellLabel:setParent(contentRect)
+            cellLabel:setRenderMode(Element.renderMode.Hidden)
+            cellLabel:setRenderIndex(998)
+
+            self.rowElements[i].cells[j] = cellLabel
         end
     end
+end
+
+function Table:updateRows()
+    self.noDataIcon:setRenderMode(#self.rows == 0 and Element.renderMode.Normal or Element.renderMode.Hidden)
+
+    for i = 1, self.maxRows do
+        local rowElement = self.rowElements[i]
+
+        if not rowElement then
+            break
+        end
+
+        local row = self.rows[(self.currentPage - 1) * self.maxRows + i]
+
+        if rowElement.checkbox then
+            rowElement.checkbox:setRenderMode((row and self.isSelectable) and Element.renderMode.Normal or Element.renderMode.Hidden)
+            rowElement.checkbox:setSelected(row and self:isRowSelected(row))
+        end
+
+        for j in ipairs(self.columns) do
+            local cellElement = rowElement.cells[j]
+            local cell = row and row.cells[j]
+
+            if cell then
+                cellElement:setText(cell.cell)
+                cellElement:setRenderMode(Element.renderMode.Normal)
+            else
+                cellElement:setRenderMode(Element.renderMode.Hidden)
+            end
+        end
+    end
+
+    if #self.rows > self.maxRows then
+        self.pagination:setRenderMode(Element.renderMode.Normal)
+        self.pagination:setTotal(math.ceil(#self.rows / self.maxRows))
+    else
+        self.pagination:setRenderMode(Element.renderMode.Hidden)
+    end
+end
+
+function Table:doPulse()
+    self:removeChildren()
+
+    local bgColor = self.theme:getColor('backgroundColor')
+    local borderRadius = self.theme:getProperty('borderRadius')
+
+    self.vectors = self:reCalculateVectors()
+
+    local rect = Rectangle:new(self.position, self.size, borderRadius, bgColor.element)
+    rect:setParent(self)
+    self.rect = rect
+
+    self:createHeader()
+    self:createContent()
 end

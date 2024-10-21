@@ -7,8 +7,8 @@ function TabsTheme:constructor()
         [Element.size.Medium] = 4,
         [Element.size.Large] = 8
     })
-    self:setProperty('innerPadding', { x = 16, y = 12 })
-    self:setProperty('borderRadius', 8)
+    self:setProperty('innerPadding', { x = Padding.Large, y = Padding.Medium })
+    self:setProperty('borderRadius', BorderRadii.Medium)
     self:setProperty('font', Core.fonts.Regular.element)
 
     self:setColor(Element.color.Primary, {

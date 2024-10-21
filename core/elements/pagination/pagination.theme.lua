@@ -2,7 +2,7 @@ PaginationTheme = inherit(Theme)
 
 function PaginationTheme:constructor()
     self:setProperty('padding', Core.globalPadding)
-    self:setProperty('borderRadius', 8)
+    self:setProperty('borderRadius', BorderRadii.Small)
     self:setColor(Element.color.Primary, {
         Background = self:combine('PRIMARY', 500, 1),
         BackgroundHover = self:combine('PRIMARY', 700, 1),
