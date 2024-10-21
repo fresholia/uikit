@@ -29,13 +29,13 @@ function ButtonGroup:setActiveIndex(index)
     end
 end
 
-function ButtonGroup:onSwitch(index, label)
+function ButtonGroup:onSwitch(index, label, value)
     if self.activeIndex == index then
         return
     end
 
     self:setActiveIndex(index)
-    self:virtual_callEvent(Element.events.OnChange, index, label)
+    self:virtual_callEvent(Element.events.OnChange, index, label, value)
 end
 
 function ButtonGroup:doPulse()
@@ -46,6 +46,7 @@ function ButtonGroup:doPulse()
     self.totalWidth = buttonWidth * #self.buttons
     for i = 1, #self.buttons do
         local label = self.buttons[i].label
+        local value = self.buttons[i].value
 
         local button = Button:new(
                 Vector2(self.position.x + (buttonWidth * (i - 1)), self.position.y),
@@ -55,7 +56,7 @@ function ButtonGroup:doPulse()
                 (self.activeIndex == i or self.activeIndex == label) and self.color or Element.color.Dark,
                 self.buttonSize
         )
-        button:createEvent(Element.events.OnClick, bind(self.onSwitch, self, i, label))
+        button:createEvent(Element.events.OnClick, bind(self.onSwitch, self, i, label, value))
         if i == 1 then
             button.theme:setProperty('borderRadius', { tl = BorderRadii.XSmall, tr = 0, br = 0, bl = BorderRadii.XSmall })
         elseif i == #self.buttons then

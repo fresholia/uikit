@@ -28,14 +28,23 @@ function Chart:constructor(_, _, color, variant, fill, stroke, series)
     self.elements = {}
     self.elementPoints = {}
     self.curveSmoothness = 20
+
+    self.isLoading = true
+
     self:doPulse()
 
     self:createEvent(Element.events.OnCursorEnter, bind(self.onCursorEnter, self))
     self:createEvent(Element.events.OnCursorLeave, bind(self.onCursorLeave, self))
 end
 
+function Chart:setIsLoading(isLoading)
+    self.isLoading = isLoading
+    self:doPulse()
+end
+
 function Chart:setSeries(series)
     self.series = series
+    self.isLoading = false
     self:doPulse()
 end
 
@@ -218,10 +227,18 @@ function Chart:createChartTexture()
 end
 
 function Chart:onCursorEnter()
+    if self.isLoading then
+        return
+    end
+
     createNativeEvent(ClientEventNames.onClientCursorMove, root, bind(self.onCursorMove, self))
 end
 
 function Chart:onCursorLeave()
+    if self.isLoading then
+        return
+    end
+
     removeNativeEvent(ClientEventNames.onClientCursorMove, root, bind(self.onCursorMove, self))
 
     self.elements.line:setRenderMode(Element.renderMode.Hidden)
@@ -306,6 +323,15 @@ function Chart:doPulse()
     bgRect:setParent(self)
     bgRect:setColor(palette.Background.element)
 
+    if self.isLoading then
+        local spinnerIcon = Icon:new(Vector2(bgRect.position.x + bgRect.size.x / 2 - 50, bgRect.position.y + bgRect.size.y / 2 - 50),
+                Vector2(100, 100), 'spinner-third', Icon.style.Solid)
+        spinnerIcon:setParent(bgRect)
+        spinnerIcon:setColor(palette.Foreground.element)
+        spinnerIcon:rotate(true)
+        return
+    end
+
     local chart, peakPoints, stepValues = self:createChartTexture()
     chart:setParent(bgRect)
 
@@ -350,6 +376,9 @@ function Chart:doPulse()
 
                 value = point.value
             }
+
+            self.elementPoints[i].pointPosition.y = math.min(self.elementPoints[i].pointPosition.y, chart.position.y + chart.size.y)
+            self.elementPoints[i].pointPosition.y = math.max(self.elementPoints[i].pointPosition.y, chart.position.y)
         end
     end
 

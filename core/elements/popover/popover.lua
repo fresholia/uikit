@@ -15,6 +15,8 @@ Popover.placement = {
 }
 
 function Popover:constructor(size, parent, placement, color)
+    self.type = ElementType.Popover
+
     self.placement = placement or Popover.placement.Top
     self.color = color or Element.color.Dark
 
@@ -27,10 +29,15 @@ function Popover:constructor(size, parent, placement, color)
 
     self.position = self:getPosition()
 
+    self.isActive = false
+
+    self:setVisible(false)
     self.content = {
         size = Vector2(self.size.x - Padding.Medium, self.size.y - Padding.Medium * 2),
         position = Vector2(self.position.x + Padding.Medium / 2, self.position.y + Padding.Medium / 2)
     }
+
+    self:doPulse()
 
     parent:createEvent(Element.events.OnClick, bind(self.onOpen, self))
     parent:createEvent(Element.events.OnClickOutside, bind(self.onClose, self))
@@ -44,9 +51,12 @@ function Popover:doPulse()
     local bgRect = Rectangle:new(self.position, self.size, BorderRadii.Small, palette.Background.element)
     bgRect:setParent(self)
     bgRect:setRenderIndex(-1)
+    bgRect:setVisible(self.isActive)
+
+    self.bgElement = bgRect
 end
 
-function Popover:onChildAdd(child)
+function Popover:onChildAdd(child, level)
     child:setVisible(false, true)
 end
 
@@ -56,16 +66,16 @@ function Popover:onOpen()
         return
     end
 
+    self.isActive = true
     self:setVisible(true, true)
-    self.position = self:getPosition()
-    self:doPulse()
 end
 
 function Popover:onClose()
-    if self.isHovered then
+    if self.bgElement.isHovered then
         return
     end
 
+    self.isActive = false
     self:setVisible(false, true)
 end
 

@@ -60,7 +60,7 @@ end
 
 function Element:destroy(...)
     Core:removeElement(self.id)
-    
+
     self:removeChildren()
 
     if self.parent then
@@ -119,8 +119,17 @@ function Element:setRenderIndex(index)
     self.renderIndex = index
 end
 
-function Element:setRenderMode(mode)
+function Element:setRenderMode(mode, recursive)
     self.renderMode = mode
+
+    if recursive then
+        for _, child in pairs(self.children) do
+            local childElement = Core:hasElement(child)
+            if childElement then
+                childElement:setRenderMode(mode, recursive)
+            end
+        end
+    end
 end
 
 function Element:setId(id)
@@ -218,6 +227,10 @@ end
 function Element:setVisible(visible, recursive)
     if recursive == nil then
         recursive = true
+    end
+
+    if self.type == ElementType.Popover and visible and not self.isActive then
+        return
     end
 
     self.visible = visible

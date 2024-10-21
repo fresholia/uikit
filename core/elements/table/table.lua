@@ -383,6 +383,7 @@ function Table:createHeader()
                 Tooltip:new(searchIcon, 'Arama', Element.size.Medium)
 
                 local popover = Popover:new(Vector2(Padding.Large * 11, Padding.Medium * 4.6), searchIcon, Popover.placement.BottomStart, Element.color.Dark)
+                popover:setParent(searchIcon)
                 local searchInput = Input:new(
                         popover.content.position,
                         popover.content.size,
