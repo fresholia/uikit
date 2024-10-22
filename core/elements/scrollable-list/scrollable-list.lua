@@ -62,11 +62,13 @@ end
 function ScrollableList:setRowHeight(rowHeight)
     self.rowHeight = rowHeight
     self:doCalculateScroll()
+    self:doPulse()
 end
 
 function ScrollableList:setItems(items)
     self.items = items
     self:doCalculateScroll()
+    self:doPulse()
 end
 
 function ScrollableList:onCursorEnterRow(row)
@@ -129,6 +131,8 @@ function ScrollableList:onRowClick(i)
 
         item.checkIcon:setRenderMode(self.selections[item.key] and Element.renderMode.Normal or Element.renderMode.Hidden)
     end
+
+    self:virtual_callEvent(Element.events.OnChange, self.selections)
 end
 
 function ScrollableList:doPulse()
