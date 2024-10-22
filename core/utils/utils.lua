@@ -61,3 +61,12 @@ function getOriginalPath(path)
     return ':' .. RESOURCE_NAME .. '/' .. path
 end
 
+function sizeArray(arr)
+    local size = 0
+
+    for _ in pairs(arr) do
+        size = size + 1
+    end
+
+    return size
+end

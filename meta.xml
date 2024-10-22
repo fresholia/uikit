@@ -80,6 +80,9 @@
             src="core/elements/base-input/base-input.theme.lua"/>
     <script type="client" skip="true" module="BaseInput" src="core/elements/base-input/base-input.lua"/>
     <script type="client" skip="true" module="Input" src="core/elements/input/input.lua"/>
+    <script type="client" skip="true" module="ScrollableList"
+            src="core/elements/scrollable-list/scrollable-list.theme.lua"/>
+    <script type="client" skip="true" module="ScrollableList" src="core/elements/scrollable-list/scrollable-list.lua"/>
 
     <script type="client" skip="true" src="core/renderer.lua"/>
     <script type="client" skip="true" ignore="true" src="main.lua"/>

@@ -25,4 +25,5 @@ ElementType = {
     Pagination = 'Pagination',
     Skeleton = 'Skeleton',
     Popover = 'Popover',
+    ScrollableList = 'ScrollableList',
 }

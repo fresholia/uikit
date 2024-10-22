@@ -163,6 +163,8 @@ function Updater:onVersionCheck(data, errno)
         outputDebugString('UIKit: New version available (' .. self.newVersion .. '), updating...')
 
         self:downloadHashes()
+    else
+        outputDebugString('UIKit: The resource is up to date.')
     end
 end
 

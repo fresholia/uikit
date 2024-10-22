@@ -46,6 +46,8 @@ function Popover:constructor(size, parent, placement, color)
 end
 
 function Popover:doPulse()
+    self:removeChildren()
+
     local palette = self.theme:getColor(self.color)
 
     local bgRect = Rectangle:new(self.position, self.size, BorderRadii.Small, palette.Background.element)
