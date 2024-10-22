@@ -70,3 +70,13 @@ function sizeArray(arr)
 
     return size
 end
+
+function toArray(arr)
+    local values = {}
+
+    for key in pairs(arr) do
+        table.insert(values, key)
+    end
+
+    return values
+end

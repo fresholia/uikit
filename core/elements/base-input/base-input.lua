@@ -37,6 +37,8 @@ function BaseInput:virtual_constructor(position, width, variant, color, inputSiz
     self.multiline = false
     self.label = nil
     self.isClearable = false
+
+    self.readOnly = false
 end
 
 function BaseInput:handle()
@@ -54,6 +56,15 @@ end
 
 function BaseInput:destructor()
     self:setIsEditing(false)
+end
+
+function BaseInput:setReadOnly(state)
+    assert(type(state) == 'boolean', 'State must be a boolean.')
+    self.readOnly = state
+end
+
+function BaseInput:isReadOnly()
+    return self.readOnly
 end
 
 function BaseInput:clearValue()
@@ -86,9 +97,15 @@ end
 
 function BaseInput:setLabel(label)
     assert(type(label) == 'string', 'Label must be a string.')
-    self.label = label
-    self:calculateSize()
-    self:doPulse()
+
+    if self.labelElement then
+        self.label = label
+        self.labelElement:setText(label)
+    else
+        self.label = label
+        self:calculateSize()
+        self:doPulse()
+    end
 end
 
 function BaseInput:setMasked(state)
@@ -148,6 +165,10 @@ function BaseInput:animateLabelToCenter()
 end
 
 function BaseInput:setIsEditing(state)
+    if self:isReadOnly() then
+        return
+    end
+
     self.isEditing = state
     guiSetInputEnabled(state)
 
@@ -231,6 +252,10 @@ function BaseInput:onCursorMoveInside(x, y)
         return
     end
 
+    if self:isReadOnly() then
+        return
+    end
+
     local font = self.theme:getProperty('font')
     local padding = self.theme:getProperty('padding')[self.inputSize]
 
@@ -291,6 +316,10 @@ end
 
 function BaseInput:onKey(button, pressOrRelease, callCount)
     if not self.isEditing then
+        return
+    end
+
+    if self:isReadOnly() then
         return
     end
 
@@ -521,6 +550,10 @@ function BaseInput:onCharacter(character)
         if utf8.len(table.concat(self.value)) >= self.maxLength then
             return
         end
+    end
+
+    if self:isReadOnly() then
+        return
     end
 
     local font = self.theme:getProperty('font')

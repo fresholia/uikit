@@ -26,4 +26,5 @@ ElementType = {
     Skeleton = 'Skeleton',
     Popover = 'Popover',
     ScrollableList = 'ScrollableList',
+    Select = 'Select',
 }

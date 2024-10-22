@@ -87,6 +87,7 @@ Dependency:addModule(ElementType.Tooltip, { ElementType.Rectangle, ElementType.T
 Dependency:addModule(ElementType.Window, { ElementType.Rectangle, ElementType.Text, ElementType.IconButton })
 Dependency:addModule(ElementType.Popover, { ElementType.Rectangle })
 Dependency:addModule(ElementType.ScrollableList, { ElementType.Rectangle, ElementType.Text, ElementType.Icon })
+Dependency:addModule(ElementType.Select, { ElementType.ScrollableList, ElementType.Popover, ElementType.Input, ElementType.Icon })
 
 function import(...)
     return Dependency:inject(sourceResource, ...)

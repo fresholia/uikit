@@ -38,7 +38,7 @@ function PopoverTheme:constructor()
     })
 
     self:setColor(Element.color.Dark, {
-        Background = self:combine('CONTENT', 2, 1),
+        Background = self:combine('DARK', 900, 0.92),
         Foreground = self:combine('CONTENT', 3, 1),
     })
 

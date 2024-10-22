@@ -120,7 +120,7 @@ function ScrollableList:onRowClick(i)
     if self.selections[item.key] then
         self.selections[item.key] = nil
     else
-        self.selections[item.key] = true
+        self.selections[item.key] = item.value
     end
 
     for i = self.scrollCurrent, self.scrollCurrent + self.maxVisibleItems do

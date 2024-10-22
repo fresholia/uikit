@@ -83,6 +83,9 @@
     <script type="client" skip="true" module="ScrollableList"
             src="core/elements/scrollable-list/scrollable-list.theme.lua"/>
     <script type="client" skip="true" module="ScrollableList" src="core/elements/scrollable-list/scrollable-list.lua"/>
+    <script type="client" skip="true" module="Select"
+            src="core/elements/select/select.theme.lua"/>
+    <script type="client" skip="true" module="Select" src="core/elements/select/select.lua"/>
 
     <script type="client" skip="true" src="core/renderer.lua"/>
     <script type="client" skip="true" ignore="true" src="main.lua"/>
