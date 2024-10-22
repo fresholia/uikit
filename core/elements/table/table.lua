@@ -30,6 +30,7 @@ function Table:constructor(_, _, selectionColor)
 
     self.rowElements = {}
 
+    self:createEvent(Element.events.OnClick, bind(self.onSelectRow, self))
     self:doPulse()
 end
 
@@ -483,7 +484,9 @@ function Table:createContent()
 
         self.rowElements[i] = {
             checkbox = selectCheckbox,
-            cells = {}
+            cells = {},
+            position = rowPosition,
+            size = rowSize
         }
 
         for j in ipairs(self.columns) do
@@ -500,6 +503,27 @@ function Table:createContent()
             cellLabel:setRenderIndex(1)
 
             self.rowElements[i].cells[j] = cellLabel
+        end
+    end
+end
+
+function Table:onSelectRow()
+    for i = 1, self.maxRows do
+        local rowElement = self.rowElements[i]
+
+        if not rowElement then
+            break
+        end
+
+        if Core:inArea(rowElement.position, rowElement.size) then
+            local data = self.rows[(self.currentPage - 1) * self.maxRows + i]
+
+            local values = {}
+            for _, cell in ipairs(data.cells) do
+                table.insert(values, cell.cell)
+            end
+
+            self:virtual_callEvent(Element.events.OnChange, values)
         end
     end
 end

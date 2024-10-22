@@ -14,11 +14,17 @@ Popover.placement = {
     RightEnd = 'right-end',
 }
 
-function Popover:constructor(size, parent, placement, color)
+Popover.variants = {
+    Solid = 'solid',
+    Light = 'light',
+}
+
+function Popover:constructor(size, parent, placement, color, variant)
     self.type = ElementType.Popover
 
     self.placement = placement or Popover.placement.Top
     self.color = color or Element.color.Dark
+    self.variant = variant or Popover.variants.Solid
 
     self.size = size
 
@@ -54,6 +60,7 @@ function Popover:doPulse()
     bgRect:setParent(self)
     bgRect:setRenderIndex(-1)
     bgRect:setVisible(self.isActive)
+    bgRect:setRenderMode(self.variant == Popover.variants.Solid and Element.renderMode.Normal or Element.renderMode.Hidden)
 
     self.bgElement = bgRect
 end

@@ -53,6 +53,12 @@ function Select:getSelections()
     return self.selections
 end
 
+function Select:setSelections(selections)
+    self.selections = selections
+    self.scrollableList:setSelections(selections)
+    self:onChangeSelection(selections)
+end
+
 function Select:setSelectMode(selectMode)
     assert(ScrollableList.selectMode[selectMode], 'Invalid select mode for Select')
 
@@ -89,7 +95,7 @@ function Select:doPulse()
     selectInput:setEndContent(Icon:new(Vector2(-200, -200), Vector2(20, 20), 'chevron-down', Icon.style.Solid))
     self.selectInput = selectInput
 
-    local popover = Popover:new(Vector2(selectInput.size.x, 175), selectInput, Popover.placement.Bottom, Element.color.Dark)
+    local popover = Popover:new(Vector2(selectInput.size.x, 175), selectInput, Popover.placement.Bottom, Element.color.Dark, Popover.variants.Light)
     local scrollableList = ScrollableList:new(popover.position, popover.size, {})
     scrollableList:setParent(popover)
     scrollableList:setRowHeight(26)

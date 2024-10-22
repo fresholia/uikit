@@ -5,7 +5,7 @@ function ScrollableListTheme:constructor()
     self:setProperty('rowPadding', Padding.XSmall)
     self:setProperty('rowBorderRadius', BorderRadii.XSmall)
 
-    self:setProperty('borderRadius', BorderRadii.Medium)
+    self:setProperty('borderRadius', BorderRadii.Small)
     self:setProperty('innerPadding', { x = Padding.Medium, y = Padding.Medium })
 
     self:setColor('background', self:combine('CONTENT', 1, 1))
